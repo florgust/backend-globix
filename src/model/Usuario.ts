@@ -42,7 +42,7 @@ Usuario.init(
             allowNull: false,
         },
         tipo: {
-            type: DataTypes.ENUM('admin', 'editor', 'usuario'),
+            type: DataTypes.ENUM('organizador', 'participante'),
             allowNull: false,
             defaultValue: 'usuario',
         },

@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 
 //app.use('/api', exemploRoutes);
-app.use('/api', usuarioRoutes);
+app.use('/usuario', usuarioRoutes);
 
 app.get('/', (req: Request, res: Response) => {
     res.send('API está rodando!');
