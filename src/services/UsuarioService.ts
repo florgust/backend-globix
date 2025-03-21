@@ -2,9 +2,13 @@ import Usuario from '../model/Usuario';
 import bcrypt from 'bcrypt';
 
 export class UsuarioService {
-    // Buscar todos os usuários
+    // Buscar todos os usuários ativos (status = 1)
     static async getUsuarios() {
-        return await Usuario.findAll();
+        return await Usuario.findAll({
+            where: {
+                status: 1
+            }
+        });
     }
 
     // Buscar usuário por ID
