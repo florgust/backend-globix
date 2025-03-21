@@ -59,3 +59,20 @@ export const updateUsuario = async (req: Request, res: Response): Promise<any> =
         return res.status(400).json({ error: (error as Error).message });
     }
 };
+
+
+// Deletar usuário (alterar status para 0)
+export const deleteUsuario = async (req: Request, res: Response): Promise<any> => {
+    try {
+        const { id } = req.params;
+        const usuario = await UsuarioService.deleteUsuario(Number(id));
+
+        if (!usuario) {
+            return res.status(404).json({ error: 'Usuário não encontrado' });
+        }
+
+        return res.json({ message: 'Usuário desativado com sucesso.' });
+    } catch (error) {
+        return res.status(500).json({ error: 'Erro ao desativar o usuário' });
+    }
+};

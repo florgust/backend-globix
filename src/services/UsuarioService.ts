@@ -66,4 +66,21 @@ export class UsuarioService {
         return usuario;
     }
 
+    // Deletar usuário (alterar status para 0)
+    static async deleteUsuario(id: number) {
+        const usuario = await Usuario.findByPk(id);
+        if (!usuario) {
+            return null; // Retorna null caso o usuário não seja encontrado
+        }
+
+        // Alterar o status para 0, marcando como desativado
+        usuario.status = 0;
+        usuario.dataAtualizacao = new Date();  // Atualiza a data de atualização
+
+        // Salvar as alterações
+        await usuario.save();
+        return usuario; // Retorna o usuário desativado
+    }
+    
+
 }
