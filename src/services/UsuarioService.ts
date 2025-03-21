@@ -47,16 +47,23 @@ export class UsuarioService {
             throw new Error('Usuário não encontrado');
         }
 
-        // Atualizar dados
+        // Atualiza os dados do usuário
         usuario.nome = nome;
         usuario.email = email;
-        usuario.senha = senha ? await bcrypt.hash(senha, 10) : usuario.senha;
         usuario.tipo = tipo;
         usuario.status = status;
-        usuario.dataAtualizacao = new Date();  // Atualiza a data de atualização
 
-        // Salvar as alterações
+        // Se a senha foi fornecida, atualiza a senha
+        if (senha) {
+            usuario.senha = await bcrypt.hash(senha, 10);
+        }
+
+        // Atualiza a data de atualização
+        usuario.dataAtualizacao = new Date();
+
+        // Salva as alterações no banco
         await usuario.save();
         return usuario;
     }
+
 }
