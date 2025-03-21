@@ -1,19 +1,21 @@
 import { Request, Response } from 'express';
-import Usuario from '../model/Usuario';
+import { UsuarioService } from '../services/UsuarioService';
 
+// Buscar todos os usuários
 export const getUsuarios = async (req: Request, res: Response): Promise<any> => {
     try {
-        const usuarios = await Usuario.findAll();
+        const usuarios = await UsuarioService.getUsuarios();
         return res.json(usuarios);
     } catch (error) {
-        return res.status(500).json({ error: error });
+        return res.status(500).json({ error: 'Erro ao buscar usuários' });
     }
 };
 
+// Buscar usuário por ID
 export const getUsuarioById = async (req: Request, res: Response): Promise<any> => {
     try {
-        const { id } = req.params; // Pega o ID da URL
-        const usuario = await Usuario.findByPk(id);
+        const { id } = req.params;
+        const usuario = await UsuarioService.getUsuarioById(Number(id));
 
         if (!usuario) {
             return res.status(404).json({ error: 'Usuário não encontrado' });
@@ -25,4 +27,13 @@ export const getUsuarioById = async (req: Request, res: Response): Promise<any> 
     }
 };
 
-
+// Criar um novo usuário
+export const createUsuario = async (req: Request, res: Response): Promise<any> => {
+    try {
+        const { nome, email, senha, tipo, status } = req.body;
+        const novoUsuario = await UsuarioService.createUsuario(nome, email, senha, tipo, status);
+        return res.status(201).json(novoUsuario);
+    } catch (error) {
+        return res.status(400).json({ error: (error as Error).message }); // mensagem de erro extraída do objeto de erro
+    }
+};

@@ -3,12 +3,14 @@ import sequelize from '../config/database';
 
 // Definindo a interface para o modelo
 interface UsuarioAttributes {
-    id: number;
+    id?: number;
     nome: string;
     email: string;
     senha: string;
     tipo: string;
     status: number;
+    dataCriacao: Date;
+    dataAtualizacao: Date;
 }
 
 // Definindo o modelo `Usuario`
@@ -19,6 +21,8 @@ class Usuario extends Model<UsuarioAttributes> implements UsuarioAttributes {
     public senha!: string;
     public tipo!: string;
     public status!: number;
+    public dataCriacao!: Date;
+    public dataAtualizacao!: Date;
 }
 
 Usuario.init(
@@ -44,20 +48,30 @@ Usuario.init(
         tipo: {
             type: DataTypes.ENUM('organizador', 'participante'),
             allowNull: false,
-            defaultValue: 'usuario',
+            defaultValue: 'participante',
         },
         status: {
             type: DataTypes.SMALLINT,
             allowNull: false,
             defaultValue: 1,
         },
+        dataCriacao: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue: DataTypes.NOW,  // Define o valor padrão como a data e hora atuais
+        },
+        dataAtualizacao: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue: DataTypes.NOW,  // Define o valor padrão como a data e hora atuais
+        },
     },
     {
         sequelize, // A instância do Sequelize para a conexão
         tableName: 'usuarios',
         modelName: 'Usuario',
-        underscored: true, // Para usar o snake_case
-        timestamps: false, // Desativar os timestamps
+        //underscored: true, // Para usar o snake_case
+        timestamps: false, // Desativar os timestamps automáticos do Sequelize
     }
 );
 
