@@ -4,10 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const exemploRoutes_1 = __importDefault(require("./routes/exemploRoutes"));
+const dotenv_1 = __importDefault(require("dotenv"));
+const UsuarioRouter_1 = __importDefault(require("./routes/UsuarioRouter"));
+dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
-app.use('/api', exemploRoutes_1.default);
+app.use('/', UsuarioRouter_1.default);
 app.get('/', (req, res) => {
     res.send('API está rodando!');
 });
