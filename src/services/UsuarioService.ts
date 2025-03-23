@@ -32,6 +32,7 @@ export class UsuarioService {
 
         // Hash da senha
         const hashedSenha = await bcrypt.hash(data.senha, 10);
+        data.senha = hashedSenha;
 
         // Criar o usuário no banco de dados com dataCriacao e dataAtualizacao
         return await Usuario.create({
