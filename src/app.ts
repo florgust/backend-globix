@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import localizacaoRouter from './routes/LocalizacaoRouter';
 import viagemRoutes from './routes/ViagemRouter';
+import usuarioroutes from './routes/UsuarioRouter';
 
 dotenv.config();
 
@@ -10,6 +11,7 @@ app.use(express.json());
 
 app.use('/', localizacaoRouter);
 app.use('/', viagemRoutes);
+app.use('/', usuarioroutes);
 
 app.get('/', (req: Request, res: Response) => {
     res.send('API está rodando!');
