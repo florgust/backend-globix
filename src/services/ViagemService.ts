@@ -1,5 +1,4 @@
 import Viagem from '../model/Viagem';
-import bcrypt from 'bcrypt';
 import { ViagemAttributes } from '../model/Viagem';
 
 export class ViagemService {

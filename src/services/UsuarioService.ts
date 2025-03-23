@@ -1,9 +1,10 @@
 import Usuario from '../model/Usuario';
 import bcrypt from 'bcrypt';
+import { UsuarioAttributes } from '../model/Usuario';
 
 export class UsuarioService {
     // Buscar todos os usuários ativos (status = 1)
-    static async getUsuarios() {
+    static async getUsuarios(): Promise<UsuarioAttributes[]> {
         return await Usuario.findAll({
             where: {
                 status: 1
@@ -12,18 +13,12 @@ export class UsuarioService {
     }
 
     // Buscar usuário por ID
-    static async getUsuarioById(id: number) {
+    static async getUsuarioById(id: number): Promise<UsuarioAttributes | null> {
         return await Usuario.findByPk(id);
     }
 
     // Criar novo usuário com validação
-    static async createUsuario(data: {
-        nome: string,
-        email: string, 
-        senha: string, 
-        tipo: string, 
-        status: number
-    }) {
+    static async createUsuario(data: Omit<UsuarioAttributes, 'id' | 'status' | 'dataCriacao' | 'dataAtualizacao'>): Promise<UsuarioAttributes> {
         // Validação de campos obrigatórios
         if (!data.nome || !data.email || !data.senha || !data.tipo) {
             throw new Error('Todos os campos obrigatórios devem ser preenchidos.');
@@ -40,23 +35,14 @@ export class UsuarioService {
 
         // Criar o usuário no banco de dados com dataCriacao e dataAtualizacao
         return await Usuario.create({
-            nome: data.nome,
-            email: data.email,
-            senha: hashedSenha,
-            tipo: data.tipo,
-            status: data.status,
+            ...data,
+            status: 1,
             dataCriacao: new Date(),  // Configura a data de criação
             dataAtualizacao: new Date()  // Configura a data de atualização
         });
     }
 
-    static async updateUsuario(id: number, data: Partial<{
-        nome: string;
-        email: string;
-        senha: string;
-        tipo: string;
-        status: number;
-    }>) {
+    static async updateUsuario(id: number, data: Partial<Omit<UsuarioAttributes, 'id' | 'dataCriacao' | 'dataAtualizacao'>>): Promise<UsuarioAttributes> {
         // Verificar se o usuário existe
         const usuario = await Usuario.findByPk(id);
         if (!usuario) {
@@ -76,7 +62,7 @@ export class UsuarioService {
     }
 
     // Deletar usuário (alterar status para 0)
-    static async deleteUsuario(id: number) {
+    static async deleteUsuario(id: number): Promise<UsuarioAttributes | null> {
         const usuario = await Usuario.findByPk(id);
         if (!usuario) {
             return null; // Retorna null caso o usuário não seja encontrado

@@ -1,45 +1,53 @@
 import { Request, Response } from 'express';
 import { UsuarioService } from '../services/UsuarioService';
+import { UsuarioAttributes } from '../model/Usuario';
+import { usuarioSchema } from '../validation/UsuarioValidation';
+import { z } from 'zod';
+
 
 // Buscar todos os usuários
-export const getUsuarios = async (req: Request, res: Response): Promise<any> => {
+export const getUsuarios = async (req: Request, res: Response): Promise<void> => {
     try {
-        const usuarios = await UsuarioService.getUsuarios();
-        return res.json(usuarios);
+        const usuarios: UsuarioAttributes[] = await UsuarioService.getUsuarios();
+        res.json(usuarios);
     } catch (error) {
-        return res.status(500).json({ error: 'Erro ao buscar usuários' });
+        res.status(500).json({ error: 'Erro ao buscar usuários' });
     }
 };
 
 // Buscar usuário por ID
-export const getUsuarioById = async (req: Request, res: Response): Promise<any> => {
+export const getUsuarioById = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
-        const usuario = await UsuarioService.getUsuarioById(Number(id));
+        const usuario: UsuarioAttributes | null = await UsuarioService.getUsuarioById(Number(id));
 
         if (!usuario) {
-            return res.status(404).json({ error: 'Usuário não encontrado' });
+            res.status(404).json({ error: 'Usuário não encontrado' });
         }
 
-        return res.json(usuario);
+        res.json(usuario);
     } catch (error) {
-        return res.status(500).json({ error: 'Erro ao buscar o usuário' });
+        res.status(500).json({ error: 'Erro ao buscar o usuário' });
     }
 };
 
 // Criar um novo usuário
-export const createUsuario = async (req: Request, res: Response): Promise<any> => {
+export const createUsuario = async (req: Request, res: Response): Promise<void> => {
     try {
-        const data = req.body;
-        const novoUsuario = await UsuarioService.createUsuario(data);
-        return res.status(201).json(novoUsuario);
+        const validetData = usuarioSchema.parse(req.body);
+        const novoUsuario = await UsuarioService.createUsuario(validetData);
+        res.status(201).json(novoUsuario);
     } catch (error) {
-        return res.status(400).json({ error: (error as Error).message }); // mensagem de erro extraída do objeto de erro
+        if (error instanceof z.ZodError) {
+            res.status(400).send(error.errors); // Retorna os erros de validação
+        } else {
+            res.status(400).json({ error: (error as Error).message }); // mensagem de erro extraída do objeto de erro
+        }
     }
 };
 
 // Atualizar usuário
-export const updateUsuario = async (req: Request, res: Response): Promise<any> => {
+export const updateUsuario = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
         const data = req.body;
@@ -47,25 +55,25 @@ export const updateUsuario = async (req: Request, res: Response): Promise<any> =
         // Chama o serviço para atualizar o usuário
         const usuarioAtualizado = await UsuarioService.updateUsuario(Number(id), data);
 
-        return res.json(usuarioAtualizado);
+        res.json(usuarioAtualizado);
     } catch (error) {
-        return res.status(400).json({ error: (error as Error).message });
+        res.status(400).json({ error: (error as Error).message });
     }
 };
 
 
 // Deletar usuário (alterar status para 0)
-export const deleteUsuario = async (req: Request, res: Response): Promise<any> => {
+export const deleteUsuario = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.params;
-        const usuario = await UsuarioService.deleteUsuario(Number(id));
+        const usuario: UsuarioAttributes | null = await UsuarioService.deleteUsuario(Number(id));
 
         if (!usuario) {
-            return res.status(404).json({ error: 'Usuário não encontrado' });
+            res.status(404).json({ error: 'Usuário não encontrado' });
         }
 
-        return res.json({ message: 'Usuário desativado com sucesso.' });
+        res.json({ message: 'Usuário desativado com sucesso.' });
     } catch (error) {
-        return res.status(500).json({ error: 'Erro ao desativar o usuário' });
+        res.status(500).json({ error: 'Erro ao desativar o usuário' });
     }
 };
