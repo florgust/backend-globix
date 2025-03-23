@@ -30,8 +30,8 @@ export const getUsuarioById = async (req: Request, res: Response): Promise<any> 
 // Criar um novo usuário
 export const createUsuario = async (req: Request, res: Response): Promise<any> => {
     try {
-        const { nome, email, senha, tipo, status } = req.body;
-        const novoUsuario = await UsuarioService.createUsuario(nome, email, senha, tipo, status);
+        const data = req.body;
+        const novoUsuario = await UsuarioService.createUsuario(data);
         return res.status(201).json(novoUsuario);
     } catch (error) {
         return res.status(400).json({ error: (error as Error).message }); // mensagem de erro extraída do objeto de erro
@@ -42,17 +42,10 @@ export const createUsuario = async (req: Request, res: Response): Promise<any> =
 export const updateUsuario = async (req: Request, res: Response): Promise<any> => {
     try {
         const { id } = req.params;
-        const { nome, email, senha, tipo, status } = req.body;
+        const data = req.body;
 
         // Chama o serviço para atualizar o usuário
-        const usuarioAtualizado = await UsuarioService.updateUsuario(
-            Number(id), 
-            nome, 
-            email, 
-            senha, 
-            tipo, 
-            status
-        );
+        const usuarioAtualizado = await UsuarioService.updateUsuario(Number(id), data);
 
         return res.json(usuarioAtualizado);
     } catch (error) {
