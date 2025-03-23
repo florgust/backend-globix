@@ -2,7 +2,7 @@ import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/database';
 
 //Definindo a interface para o modelo
-interface ViagemAttributes {
+export interface ViagemAttributes {
     id?: number;
     nome: string;
     descricao?: string;

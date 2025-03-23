@@ -2,10 +2,11 @@ import { Request, Response } from 'express';
 import { ViagemService } from '../services/ViagemService';
 import { createViagemSchema } from '../validation/ViagemValidation';
 import { z } from 'zod';
+import { ViagemAttributes } from '../model/Viagem';
 
 export const getViagens = async (req: Request, res: Response): Promise<void> => {
     try {
-        const viagens = await ViagemService.getViagens();
+        const viagens:ViagemAttributes[] = await ViagemService.getViagens();
         res.status(200).send(viagens);
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Um erro desconhecido ocorreu';
@@ -16,7 +17,7 @@ export const getViagens = async (req: Request, res: Response): Promise<void> => 
 export const getViagemById = async (req: Request, res: Response): Promise<void> => {
     try {
         const id = parseInt(req.params.id);
-        const viagem = await ViagemService.getViagemById(id);
+        const viagem:ViagemAttributes | null = await ViagemService.getViagemById(id);
 
         if (!viagem) {
             res.status(404).send('Viagem não encontrada');
@@ -48,8 +49,8 @@ export const createViagem = async (req: Request, res: Response): Promise<void> =
 export const updateViagem = async (req: Request, res: Response): Promise<void> => {
     try {
         const id = parseInt(req.params.id);
-        const { nome, descricao, dataInicio, dataFim } = req.body;
-        const viagem = await ViagemService.updateViagem(id, { nome, descricao, dataInicio, dataFim });
+        const data = req.body;
+        const viagem = await ViagemService.updateViagem(id, data);
 
         if (!viagem) {
             res.status(404).send('Viagem não encontrada');

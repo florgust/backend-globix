@@ -1,29 +1,27 @@
 import Viagem from '../model/Viagem';
 import bcrypt from 'bcrypt';
+import { ViagemAttributes } from '../model/Viagem';
 
 export class ViagemService {
     //Buscar todas as viagens
-    public static async getViagens(): Promise<Viagem[]> {
+    public static async getViagens(): Promise<ViagemAttributes[]> {
         return Viagem.findAll();
     }
 
     //Buscar viagem por ID
-    public static async getViagemById(id: number): Promise<Viagem | null> {
+    public static async getViagemById(id: number): Promise<ViagemAttributes | null> {
         return Viagem.findByPk(id);
     }
 
     //Criar nova viagem com validação
-    static async createViagem(data: {
-        nome: string,
-        descricao?: string,
-        dataInicio: Date,
-        dataFim: Date,
-        criadorId: number,
-    }) {
+    static async createViagem(data: Omit<ViagemAttributes, 'id' | 'codigoConvite' | 'status' | 'dataCriacao' | 'dataAtualizacao'>): Promise<ViagemAttributes> {
         //Criar a viagem no banco de dados com dataCriacao e dataAtualizacao
+
+        const codigoConvite = await this.createCodigoConvite(); // Chama o método de instância
+
         return await Viagem.create({
             ...data,
-            codigoConvite: 123456,  // Configura o código de convite
+            codigoConvite: codigoConvite,  // Configura o código de convite
             status: 1,  // Configura o status da viagem
             dataCriacao: new Date(),  // Configura a data de criação
             dataAtualizacao: new Date()  // Configura a data de atualização
@@ -48,12 +46,7 @@ export class ViagemService {
     }
 
     //Atualizar viagem
-    static async updateViagem(id: number, data: Partial<{
-        nome: string;
-        descricao: string;
-        dataInicio: Date;
-        dataFim: Date;
-    }>) {
+    static async updateViagem(id: number, data: Partial<Omit<ViagemAttributes, 'id' | 'codigoConvite' | 'status' | 'dataCriacao' | 'dataAtualizacao'>>): Promise<ViagemAttributes> {
         //Verificar se a viagem existe
         const viagem = await Viagem.findByPk(id);
         if (!viagem) {
