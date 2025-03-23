@@ -1,7 +1,7 @@
-import { Router } from 'express';
+import express from 'express';
 import { getViagens, getViagemById, createViagem, updateViagem, deleteViagem} from '../controllers/ViagemController';
 
-const router = Router();
+const router = express.Router();
 
 router.get('/viagens', getViagens);
 router.get('/viagem/:id', getViagemById);

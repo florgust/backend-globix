@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import express from 'express';
 import {
     getUsuarios,
     getUsuarioById,
@@ -7,7 +7,7 @@ import {
     deleteUsuario
 } from '../controllers/UsuarioController';
 
-const router = Router();
+const router = express.Router();
 
 // Rotas para Usuários
 router.get('/usuarios', getUsuarios); // Buscar todos os usuários

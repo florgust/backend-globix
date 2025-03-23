@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import express from 'express';
 import {
     getLocalizacoes,
     getLocalizacaoById,
@@ -7,7 +7,7 @@ import {
     deleteLocalizacao
 } from '../controllers/LocalizacaoController';
 
-const router = Router();
+const router = express.Router();
 
 // Rotas para Localizações
 router.get('/localizacoes', getLocalizacoes); // Buscar todas as localizações
