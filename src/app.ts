@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
+import localizacaoRouter from './routes/LocalizacaoRouter';
 import viagemRoutes from './routes/ViagemRouter';
 
 dotenv.config();
@@ -7,6 +8,7 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
+app.use('/', localizacaoRouter);
 app.use('/', viagemRoutes);
 
 app.get('/', (req: Request, res: Response) => {
