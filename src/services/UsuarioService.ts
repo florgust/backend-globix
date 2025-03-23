@@ -52,7 +52,7 @@ export class UsuarioService {
 
         // Se a senha foi fornecida, atualiza a senha
         if (data.senha) {
-            usuario.senha = await bcrypt.hash(data.senha, 10);
+            data.senha = await bcrypt.hash(data.senha, 10);
         }
     
         // Atualizar os campos fornecidos
