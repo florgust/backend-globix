@@ -121,6 +121,9 @@ out
 # Serverless directories
 .serverless/
 
+# Dist
+dist
+
 # FuseBox cache
 .fusebox/
 
