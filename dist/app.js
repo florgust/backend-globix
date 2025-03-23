@@ -6,14 +6,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const LocalizacaoRouter_1 = __importDefault(require("./routes/LocalizacaoRouter"));
+const ViagemRouter_1 = __importDefault(require("./routes/ViagemRouter"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use('/', LocalizacaoRouter_1.default);
+app.use('/', ViagemRouter_1.default);
 app.get('/', (req, res) => {
     res.send('API está rodando!');
 });
-const PORT = process.env.PORT || 3000; // Usar uma variável de ambiente ou o valor 3000 por padrão
+const PORT = process.env.PORT || 3000; //Porta padrão 3000
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
 });
