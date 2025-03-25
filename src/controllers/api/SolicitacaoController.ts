@@ -9,7 +9,7 @@ export const getSolicitacoesPorUsuario = async (req: Request, res: Response): Pr
         const solicitacoes: SolicitacaoAttributes[] = await SolicitacaoService.getSolicitacoesPorUsuario(Number(idUsuario));
         res.status(200).json(solicitacoes);
     } catch (error) {
-        res.status(500).json({ error: 'Erro ao buscar solicitações do usuário' });
+        res.status(500).json({ error: error });
     }
 };
 

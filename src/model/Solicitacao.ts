@@ -28,6 +28,7 @@ Solicitacao.init(
         idViagem: {
             type: DataTypes.SMALLINT,
             allowNull: false,
+            primaryKey: true,
             references: {
                 model: Viagem,
                 key: 'id',
@@ -38,6 +39,7 @@ Solicitacao.init(
         idUsuario: {
             type: DataTypes.SMALLINT,
             allowNull: false,
+            primaryKey: true,
             references: {
                 model: Usuario,
                 key: 'id',
