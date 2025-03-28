@@ -28,11 +28,10 @@ export const getSolicitacoesPorViagem = async (req: Request, res: Response): Pro
 export const criarSolicitacao = async (req: Request, res: Response): Promise<void> => {
     try {
         const { idViagem, idUsuario } = req.params;
-        
         const novaSolicitacao = await SolicitacaoService.criarSolicitacao(Number(idViagem), Number(idUsuario));
         res.status(201).json(novaSolicitacao);
     } catch (error) {
-        res.status(500).json({ error: 'Erro ao criar solicitação' });
+        res.status(500).json({ error: error });
     }
 };
 

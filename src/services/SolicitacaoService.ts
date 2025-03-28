@@ -13,7 +13,7 @@ export class SolicitacaoService {
         return await Solicitacao.findAll({ where: { idViagem } });
     }
 
-    static async criarSolicitacao(idUsuario: number, idViagem: number) {
+    static async criarSolicitacao(idViagem: number, idUsuario: number) {
     // Buscar a viagem que está sendo solicitada
         const viagemSolicitada = await Viagem.findByPk(idViagem);
 
@@ -21,13 +21,14 @@ export class SolicitacaoService {
             throw new Error("A viagem solicitada não existe.");
         }
 
+        console.log(`Viagem existente --> ${viagemSolicitada}`)
+
         // Verificar se o usuário já possui uma solicitação ou participação em viagens com conflito de datas
         const conflitos = await Solicitacao.findAll({
             where: { idUsuario },
             include: [
                 {
                     model: Viagem,
-                    as: "viagem",
                     where: {
                         [Op.or]: [
                             {
@@ -51,6 +52,8 @@ export class SolicitacaoService {
                 },
             ],
         });
+
+    console.log(`Não há conflitos!!`)
 
     if (conflitos.length > 0) {
         throw new Error("O usuário já possui uma solicitação ou participação em uma viagem com conflito de datas.");
