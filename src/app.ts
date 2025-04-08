@@ -4,11 +4,13 @@ import localizacaoRouter from './routes/LocalizacaoRouter';
 import viagemRoutes from './routes/ViagemRouter';
 import usuarioroutes from './routes/UsuarioRouter';
 import solicitacoesroutes from './routes/SolicitacaoRouter';
+const cors = require('cors');
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 app.use('/', localizacaoRouter);
 app.use('/', viagemRoutes);
