@@ -46,16 +46,10 @@ class UsuarioService {
             }
             // Hash da senha
             const hashedSenha = yield bcrypt_1.default.hash(data.senha, 10);
+            data.senha = hashedSenha;
             // Criar o usuário no banco de dados com dataCriacao e dataAtualizacao
-            return yield Usuario_1.default.create({
-                nome: data.nome,
-                email: data.email,
-                senha: hashedSenha,
-                tipo: data.tipo,
-                status: data.status,
-                dataCriacao: new Date(), // Configura a data de criação
-                dataAtualizacao: new Date() // Configura a data de atualização
-            });
+            return yield Usuario_1.default.create(Object.assign(Object.assign({}, data), { status: 1, dataCriacao: new Date(), dataAtualizacao: new Date() // Configura a data de atualização
+             }));
         });
     }
     static updateUsuario(id, data) {
@@ -67,7 +61,7 @@ class UsuarioService {
             }
             // Se a senha foi fornecida, atualiza a senha
             if (data.senha) {
-                usuario.senha = yield bcrypt_1.default.hash(data.senha, 10);
+                data.senha = yield bcrypt_1.default.hash(data.senha, 10);
             }
             // Atualizar os campos fornecidos
             return yield usuario.update(Object.assign(Object.assign({}, data), { dataAtualizacao: new Date() }));

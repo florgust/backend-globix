@@ -8,12 +8,16 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const LocalizacaoRouter_1 = __importDefault(require("./routes/LocalizacaoRouter"));
 const ViagemRouter_1 = __importDefault(require("./routes/ViagemRouter"));
 const UsuarioRouter_1 = __importDefault(require("./routes/UsuarioRouter"));
+const SolicitacaoRouter_1 = __importDefault(require("./routes/SolicitacaoRouter"));
+const cors = require('cors');
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
+app.use(cors());
 app.use('/', LocalizacaoRouter_1.default);
 app.use('/', ViagemRouter_1.default);
 app.use('/', UsuarioRouter_1.default);
+app.use('/', SolicitacaoRouter_1.default);
 app.get('/', (req, res) => {
     res.send('API está rodando!');
 });
