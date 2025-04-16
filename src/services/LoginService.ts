@@ -1,6 +1,7 @@
 
 import { PasswordUtils } from '@utils/PasswordUtils';
 import Usuario from '@models/Usuario';
+import { BadRequestError, NotFoundError } from '@utils/Errors';
 
 class LoginService {
   static async validateUser(email: string, senha: string): Promise<{ status: number; data: any }> {
@@ -8,14 +9,14 @@ class LoginService {
     const usuario = await Usuario.findOne({ where: { email } });
 
     if (!usuario) {
-      return { status: 404, data: { message: 'Usuário não encontrado.' } };
+      throw new NotFoundError("Usuário não encontrado.");
     }
 
     // Verifica se a senha está correta
     const senhaValida = await PasswordUtils.comparePassword(senha, usuario.senha);
 
     if (!senhaValida) {
-      return { status: 401, data: { message: 'Senha inválida.' } };
+      throw new BadRequestError("Senha inválida.");
     }
 
     // Retorna sucesso se o usuário for autenticado

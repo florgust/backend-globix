@@ -5,6 +5,8 @@ import viagemRoutes from '@routes/ViagemRouter';
 import usuarioroutes from '@routes/UsuarioRouter';
 import solicitacoesroutes from '@routes/SolicitacaoRouter';
 import login from '@routes/LoginRouter';
+import { errorDefaultHandler } from '@middlewares/ErrorHandler';
+
 const cors = require('cors');
 
 dotenv.config();
@@ -18,6 +20,8 @@ app.use('/', localizacaoRouter);
 app.use('/', usuarioroutes);
 app.use('/', solicitacoesroutes);
 app.use('/', login);
+
+app.use(errorDefaultHandler());
 
 app.get('/', (req: Request, res: Response) => {
     res.send('API está rodando!');

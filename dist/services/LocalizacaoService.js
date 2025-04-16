@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LocalizacaoService = void 0;
 const Localizacao_1 = __importDefault(require("@models/Localizacao"));
+const Errors_1 = require("@utils/Errors");
 class LocalizacaoService {
     // Buscar todas as localizações
     static getLocalizacoes() {
@@ -24,37 +25,41 @@ class LocalizacaoService {
     // Buscar Localização por ID
     static getLocalizacaoById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield Localizacao_1.default.findByPk(id);
+            const localizacao = yield Localizacao_1.default.findByPk(id);
+            if (!localizacao) {
+                throw new Errors_1.NotFoundError("Localização não encontrada.");
+            }
+            return localizacao;
         });
     }
-    // Criar nova localização com validação 
+    // Criar nova localização com validação
     static createLocalizacao(data) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (!data.nome) {
+                throw new Errors_1.BadRequestError("O campo 'nome' é obrigatório.");
+            }
             return yield Localizacao_1.default.create(Object.assign(Object.assign({}, data), { dataCriacao: new Date(), dataAtualizacao: new Date() }));
         });
     }
     // Atualizar uma localização existente
     static updateLocalizacao(id, data) {
         return __awaiter(this, void 0, void 0, function* () {
-            // Verificar se a localização existe
             const localizacao = yield Localizacao_1.default.findByPk(id);
             if (!localizacao) {
-                throw new Error('Localização não encontrada.');
+                throw new Errors_1.NotFoundError("Localização não encontrada.");
             }
-            // Atualizar os campos fornecidos
             return yield localizacao.update(Object.assign(Object.assign({}, data), { dataAtualizacao: new Date() }));
         });
     }
     // Deletar localização
-    static deleteLocalização(id) {
+    static deleteLocalizacao(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const localizacao = yield Localizacao_1.default.findByPk(id);
             if (!localizacao) {
-                throw new Error('Deletar localização --> Localização não encontrada!');
+                throw new Errors_1.NotFoundError("Localização não encontrada.");
             }
-            // Deletar a localização
             yield localizacao.destroy();
-            return { message: 'Localização deletada com sucesso!' };
+            return { message: "Localização deletada com sucesso!" };
         });
     }
 }

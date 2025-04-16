@@ -14,28 +14,33 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ViagemService = void 0;
 const Viagem_1 = __importDefault(require("@models/Viagem"));
+const Errors_1 = require("@utils/Errors");
 class ViagemService {
-    //Buscar todas as viagens
+    // Buscar todas as viagens
     static getViagens() {
         return __awaiter(this, void 0, void 0, function* () {
             return Viagem_1.default.findAll();
         });
     }
-    //Buscar viagem por ID
+    // Buscar viagem por ID
     static getViagemById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return Viagem_1.default.findByPk(id);
+            const viagem = yield Viagem_1.default.findByPk(id);
+            if (!viagem) {
+                throw new Errors_1.NotFoundError('Viagem não encontrada.');
+            }
+            return viagem;
         });
     }
-    //Criar nova viagem com validação
+    // Criar nova viagem com validação
     static createViagem(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            //Criar a viagem no banco de dados com dataCriacao e dataAtualizacao
+            // Criar a viagem no banco de dados com dataCriacao e dataAtualizacao
             const codigoConvite = yield this.createCodigoConvite(); // Chama o método de instância
-            return yield Viagem_1.default.create(Object.assign(Object.assign({}, data), { codigoConvite: codigoConvite, status: 1, dataCriacao: new Date(), dataAtualizacao: new Date() // Configura a data de atualização
-             }));
+            return yield Viagem_1.default.create(Object.assign(Object.assign({}, data), { codigoConvite: codigoConvite, status: 1, dataCriacao: new Date(), dataAtualizacao: new Date() }));
         });
     }
+    // Gerar código de convite único
     static createCodigoConvite() {
         return __awaiter(this, void 0, void 0, function* () {
             let codigoConvite;
@@ -51,28 +56,27 @@ class ViagemService {
             return codigoConvite;
         });
     }
-    //Atualizar viagem
+    // Atualizar viagem
     static updateViagem(id, data) {
         return __awaiter(this, void 0, void 0, function* () {
-            //Verificar se a viagem existe
+            // Verificar se a viagem existe
             const viagem = yield Viagem_1.default.findByPk(id);
             if (!viagem) {
-                throw new Error('Viagem não encontrada');
+                throw new Errors_1.NotFoundError('Viagem não encontrada.');
             }
-            viagem.dataAtualizacao = new Date();
             // Atualizar os campos fornecidos
             return yield viagem.update(Object.assign(Object.assign({}, data), { dataAtualizacao: new Date() }));
         });
     }
-    //Deletar viagem
+    // Deletar viagem
     static deleteViagem(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const viagem = yield Viagem_1.default.findByPk(id);
             if (!viagem) {
-                return false;
+                throw new Errors_1.NotFoundError('Viagem não encontrada.');
             }
             yield viagem.destroy();
-            return true;
+            return { message: 'Viagem deletada com sucesso!' };
         });
     }
 }
