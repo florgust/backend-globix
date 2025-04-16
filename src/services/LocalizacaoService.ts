@@ -1,5 +1,4 @@
-import Localizacao from "../model/Localizacao";
-import { LocalizacaoAttributes as LocalizacaoType } from "../model/Localizacao";
+import Localizacao, { LocalizacaoAttributes as LocalizacaoType } from "@models/Localizacao";
 
 export class LocalizacaoService {
     // Buscar todas as localizações

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { UsuarioService } from '../services/UsuarioService';
-import { UsuarioAttributes } from '../model/Usuario';
-import { usuarioSchema } from '../validation/UsuarioValidation';
+import { UsuarioService } from '@services/UsuarioService';
+import { UsuarioAttributes } from '@models/Usuario';
+import { usuarioSchema } from '@validation/UsuarioValidation';
 import { z } from 'zod';
 
 

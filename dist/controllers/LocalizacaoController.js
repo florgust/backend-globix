@@ -10,8 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteLocalizacao = exports.updateLocalizacao = exports.createLocalizacao = exports.getLocalizacaoById = exports.getLocalizacoes = void 0;
-const LocalizacaoService_1 = require("../services/LocalizacaoService");
-const LocalizacaoValidation_1 = require("../validation/LocalizacaoValidation");
+const LocalizacaoService_1 = require("@services/LocalizacaoService");
+const LocalizacaoValidation_1 = require("@validation/LocalizacaoValidation");
 // Buscar todas as localizações
 const getLocalizacoes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('GET /localizacoes - Iniciando busca de todas as localizações');

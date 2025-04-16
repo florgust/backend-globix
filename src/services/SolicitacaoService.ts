@@ -1,6 +1,6 @@
-import Solicitacao from "../model/Solicitacao";
-import Viagem from "../model/Viagem";
-import { Op } from "sequelize";
+import Solicitacao from '@models/Solicitacao';
+import Viagem from '@models/Viagem';
+import { Op } from 'sequelize';
 
 export class SolicitacaoService {
     // Buscar todas as solicitações de um usuário
@@ -14,7 +14,7 @@ export class SolicitacaoService {
     }
 
     static async criarSolicitacao(idViagem: number, idUsuario: number) {
-    // Buscar a viagem que está sendo solicitada
+        // Buscar a viagem que está sendo solicitada
         const viagemSolicitada = await Viagem.findByPk(idViagem);
 
         if (!viagemSolicitada) {
@@ -53,22 +53,22 @@ export class SolicitacaoService {
             ],
         });
 
-    console.log(`Não há conflitos!!`)
+        console.log(`Não há conflitos!!`)
 
-    if (conflitos.length > 0) {
-        throw new Error("O usuário já possui uma solicitação ou participação em uma viagem com conflito de datas.");
+        if (conflitos.length > 0) {
+            throw new Error("O usuário já possui uma solicitação ou participação em uma viagem com conflito de datas.");
+        }
+
+        // Criar a nova solicitação
+        return await Solicitacao.create({
+            idViagem: idViagem,
+            idUsuario: idUsuario,
+            papel: "participante",
+            status: 0,
+            dataCriacao: new Date(),
+            dataAtualizacao: new Date(),
+        });
     }
-
-    // Criar a nova solicitação
-    return await Solicitacao.create({
-        idViagem: idViagem,
-        idUsuario: idUsuario,
-        papel: "participante",
-        status: 0,
-        dataCriacao: new Date(),
-        dataAtualizacao: new Date(),
-    });
-}
 
     // Atualizar o status de uma solicitação
     static async atualizarStatusSolicitacao(idViagem: number, idUsuario: number) {

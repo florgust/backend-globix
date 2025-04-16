@@ -1,6 +1,5 @@
-import Usuario from '../model/Usuario';
-import bcrypt from 'bcrypt';
-import { UsuarioAttributes } from '../model/Usuario';
+import Usuario, { UsuarioAttributes } from '@models/Usuario';
+import { PasswordUtils } from '@utils/PasswordUtils';
 
 export class UsuarioService {
     // Buscar todos os usuários ativos (status = 1)
@@ -31,7 +30,7 @@ export class UsuarioService {
         }
 
         // Hash da senha
-        const hashedSenha = await bcrypt.hash(data.senha, 10);
+        const hashedSenha = await PasswordUtils.hashPassword(data.senha);
         data.senha = hashedSenha;
 
         // Criar o usuário no banco de dados com dataCriacao e dataAtualizacao
@@ -52,9 +51,9 @@ export class UsuarioService {
 
         // Se a senha foi fornecida, atualiza a senha
         if (data.senha) {
-            data.senha = await bcrypt.hash(data.senha, 10);
+            data.senha = await PasswordUtils.hashPassword(data.senha);
         }
-    
+
         // Atualizar os campos fornecidos
         return await usuario.update({
             ...data,
@@ -77,6 +76,6 @@ export class UsuarioService {
         await usuario.save();
         return usuario; // Retorna o usuário desativado
     }
-    
+
 
 }

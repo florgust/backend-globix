@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { ViagemService } from '../services/ViagemService';
-import { createViagemSchema } from '../validation/ViagemValidation';
+import { ViagemService } from '@services/ViagemService';
+import { createViagemSchema } from '@validation/ViagemValidation';
 import { z } from 'zod';
-import { ViagemAttributes } from '../model/Viagem';
+import { ViagemAttributes } from '@models/Viagem';
 
 export const getViagens = async (req: Request, res: Response): Promise<void> => {
     console.log('GET /viagens - Iniciando busca de todas as viagens');

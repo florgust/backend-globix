@@ -10,8 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteViagem = exports.updateViagem = exports.createViagem = exports.getViagemById = exports.getViagens = void 0;
-const ViagemService_1 = require("../services/ViagemService");
-const ViagemValidation_1 = require("../validation/ViagemValidation");
+const ViagemService_1 = require("@services/ViagemService");
+const ViagemValidation_1 = require("@validation/ViagemValidation");
 const zod_1 = require("zod");
 const getViagens = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('GET /viagens - Iniciando busca de todas as viagens');

@@ -4,7 +4,7 @@ import {
     getSolicitacoesPorViagem,
     criarSolicitacao,
     atualizarStatusSolicitacao
-} from '../controllers/api/SolicitacaoController';
+} from '@controllers/api/solicitacao/SolicitacaoController';
 
 const router = express.Router();
 

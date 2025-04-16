@@ -1,5 +1,4 @@
-import Viagem from '../model/Viagem';
-import { ViagemAttributes } from '../model/Viagem';
+import Viagem, { ViagemAttributes } from '@models/Viagem';
 
 export class ViagemService {
     //Buscar todas as viagens
@@ -30,17 +29,17 @@ export class ViagemService {
     static async createCodigoConvite(): Promise<number> {
         let codigoConvite: number;
         let codigoExiste: Viagem | null;
-    
+
         do {
             // Gerar um novo código de convite
             codigoConvite = Math.floor(100000 + Math.random() * 900000);
-    
+
             // Verificar se o código de convite já existe na tabela
             codigoExiste = await Viagem.findOne({
                 where: { codigoConvite },
             });
         } while (codigoExiste); // Repetir até encontrar um código único
-    
+
         return codigoConvite;
     }
 
@@ -53,7 +52,7 @@ export class ViagemService {
         }
 
         viagem.dataAtualizacao = new Date();
-        
+
         // Atualizar os campos fornecidos
         return await viagem.update({
             ...data,

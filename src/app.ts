@@ -1,9 +1,10 @@
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
-import localizacaoRouter from './routes/LocalizacaoRouter';
-import viagemRoutes from './routes/ViagemRouter';
-import usuarioroutes from './routes/UsuarioRouter';
-import solicitacoesroutes from './routes/SolicitacaoRouter';
+import localizacaoRouter from '@routes/LocalizacaoRouter';
+import viagemRoutes from '@routes/ViagemRouter';
+import usuarioroutes from '@routes/UsuarioRouter';
+import solicitacoesroutes from '@routes/SolicitacaoRouter';
+import login from '@routes/LoginRouter';
 const cors = require('cors');
 
 dotenv.config();
@@ -12,16 +13,17 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.use('/', localizacaoRouter);
 app.use('/', viagemRoutes);
+app.use('/', localizacaoRouter);
 app.use('/', usuarioroutes);
 app.use('/', solicitacoesroutes);
+app.use('/', login);
 
 app.get('/', (req: Request, res: Response) => {
     res.send('API está rodando!');
 });
 
-const PORT = process.env.PORT || 3000; //Porta padrão 3000
+const PORT = process.env.PORT ?? 3000; //Porta padrão 3000
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
 });

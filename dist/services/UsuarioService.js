@@ -13,8 +13,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsuarioService = void 0;
-const Usuario_1 = __importDefault(require("../model/Usuario"));
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const Usuario_1 = __importDefault(require("@models/Usuario"));
+const PasswordUtils_1 = require("@utils/PasswordUtils");
 class UsuarioService {
     // Buscar todos os usuários ativos (status = 1)
     static getUsuarios() {
@@ -45,7 +45,7 @@ class UsuarioService {
                 throw new Error('O email já está em uso.');
             }
             // Hash da senha
-            const hashedSenha = yield bcrypt_1.default.hash(data.senha, 10);
+            const hashedSenha = yield PasswordUtils_1.PasswordUtils.hashPassword(data.senha);
             data.senha = hashedSenha;
             // Criar o usuário no banco de dados com dataCriacao e dataAtualizacao
             return yield Usuario_1.default.create(Object.assign(Object.assign({}, data), { status: 1, dataCriacao: new Date(), dataAtualizacao: new Date() // Configura a data de atualização
@@ -61,7 +61,7 @@ class UsuarioService {
             }
             // Se a senha foi fornecida, atualiza a senha
             if (data.senha) {
-                data.senha = yield bcrypt_1.default.hash(data.senha, 10);
+                data.senha = yield PasswordUtils_1.PasswordUtils.hashPassword(data.senha);
             }
             // Atualizar os campos fornecidos
             return yield usuario.update(Object.assign(Object.assign({}, data), { dataAtualizacao: new Date() }));

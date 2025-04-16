@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { SolicitacaoService } from '../../services/SolicitacaoService';
-import { SolicitacaoAttributes } from '../../model/Solicitacao';
+import { SolicitacaoService } from '@services/SolicitacaoService';
+import { SolicitacaoAttributes } from '@models/Solicitacao';
 
 // Buscar todas as solicitações de um usuário
 export const getSolicitacoesPorUsuario = async (req: Request, res: Response): Promise<void> => {

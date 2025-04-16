@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ViagemService = void 0;
-const Viagem_1 = __importDefault(require("../model/Viagem"));
+const Viagem_1 = __importDefault(require("@models/Viagem"));
 class ViagemService {
     //Buscar todas as viagens
     static getViagens() {

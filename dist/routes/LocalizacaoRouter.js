@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const LocalizacaoController_1 = require("../controllers/LocalizacaoController");
+const LocalizacaoController_1 = require("@controllers/LocalizacaoController");
 const router = express_1.default.Router();
 // Rotas para Localizações
 router.get('/localizacoes', LocalizacaoController_1.getLocalizacoes); // Buscar todas as localizações

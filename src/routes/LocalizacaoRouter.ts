@@ -5,7 +5,7 @@ import {
     createLocalizacao,
     updateLocalizacao,
     deleteLocalizacao
-} from '../controllers/LocalizacaoController';
+} from '@controllers/LocalizacaoController';
 
 const router = express.Router();
 

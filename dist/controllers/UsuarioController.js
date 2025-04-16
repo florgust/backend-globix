@@ -10,8 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUsuario = exports.updateUsuario = exports.createUsuario = exports.getUsuarioById = exports.getUsuarios = void 0;
-const UsuarioService_1 = require("../services/UsuarioService");
-const UsuarioValidation_1 = require("../validation/UsuarioValidation");
+const UsuarioService_1 = require("@services/UsuarioService");
+const UsuarioValidation_1 = require("@validation/UsuarioValidation");
 const zod_1 = require("zod");
 // Buscar todos os usuários
 const getUsuarios = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

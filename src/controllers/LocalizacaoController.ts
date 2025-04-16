@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { LocalizacaoService } from '../services/LocalizacaoService';
-import { localizacaoSchema } from '../validation/LocalizacaoValidation';
-import { LocalizacaoAttributes as LocalizacaoType} from '../model/Localizacao'; 
+import { LocalizacaoService } from '@services/LocalizacaoService';
+import { localizacaoSchema } from '@validation/LocalizacaoValidation';
+import { LocalizacaoAttributes as LocalizacaoType } from '@models/Localizacao';
 
 // Buscar todas as localizações
 export const getLocalizacoes = async (req: Request, res: Response): Promise<void> => {
