@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { ZodError } from 'zod';
-import { NotFoundError, BadRequestError, InternalServerError } from '@utils/Errors';
+import { NotFoundError, BadRequestError, UnauthorizedError, InternalServerError } from '@utils/Errors';
 
 export const errorDefaultHandler = (customMessage = 'Erro interno do servidor') => {
     return (err: Error, req: Request, res: Response, next: NextFunction): void => {
@@ -16,7 +16,7 @@ export const errorDefaultHandler = (customMessage = 'Erro interno do servidor') 
         }
 
         // Verifica se é um erro personalizado
-        if (err instanceof NotFoundError || err instanceof BadRequestError || err instanceof InternalServerError) {
+        if (err instanceof NotFoundError || err instanceof BadRequestError || err instanceof UnauthorizedError || err instanceof InternalServerError) {
             res.status(err.statusCode).json({
                 error: err.message,
             });

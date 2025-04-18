@@ -18,6 +18,16 @@ export class BadRequestError extends Error {
     }
 }
 
+export class UnauthorizedError extends Error {
+    statusCode: number;
+
+    constructor(message = 'Não autorizado') {
+        super(message);
+        this.name = 'UnauthorizedError';
+        this.statusCode = 401;
+    }
+}
+
 export class InternalServerError extends Error {
     statusCode: number;
 
