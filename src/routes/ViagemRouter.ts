@@ -1,5 +1,11 @@
 import express from 'express';
-import { getViagens, getViagemById, createViagem, updateViagem, deleteViagem} from '../controllers/ViagemController';
+import {
+    getViagens,
+    getViagemById,
+    createViagem,
+    updateViagem,
+    deleteViagem
+} from '@controllers/ViagemController';
 
 const router = express.Router();
 

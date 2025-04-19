@@ -6,7 +6,34 @@
     "rootDir": "./src",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "strict": true
+    "strict": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@services/*": [
+        "services/*"
+      ],
+      "@controllers/*": [
+        "controllers/*"
+      ],
+      "@models/*": [
+        "models/*"
+      ],
+      "@validation/*": [
+        "validation/*"
+      ],
+      "@middlewares/*": [
+        "middlewares/*"
+      ],
+      "@routes/*": [
+        "routes/*"
+      ],
+      "@utils/*": [
+        "utils/*"
+      ],
+      "@config/*": [
+        "config/*"
+      ]
+    }
   },
   "include": [
     "src/**/*.ts"

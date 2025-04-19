@@ -5,7 +5,7 @@ import {
     createUsuario,
     updateUsuario,
     deleteUsuario
-} from '../controllers/UsuarioController';
+} from '@controllers/UsuarioController';
 
 const router = express.Router();
 
