@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start": "node -r tsconfig-paths/register dist/app.js",
+    "start": "node dist/app.js",
     "dev": "nodemon -r tsconfig-paths/register src/app.ts",
     "heroku-postbuild": "npm run build"
   },
@@ -20,6 +20,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
+    "module-alias": "^2.2.3",
     "pg": "^8.14.1",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.6",
@@ -36,5 +37,15 @@
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
+  },
+  "_moduleAliases": {
+    "@services": "dist/services",
+    "@controllers": "dist/controllers",
+    "@models": "dist/models",
+    "@validation": "dist/validation",
+    "@middlewares": "dist/middlewares",
+    "@routes": "dist/routes",
+    "@utils": "dist/utils",
+    "@config": "dist/config"
   }
 }
