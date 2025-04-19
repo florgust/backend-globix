@@ -9,34 +9,19 @@
     "strict": true,
     "baseUrl": "./src",
     "paths": {
-      "@services/*": [
-        "services/*"
-      ],
-      "@controllers/*": [
-        "controllers/*"
-      ],
-      "@models/*": [
-        "models/*"
-      ],
-      "@validation/*": [
-        "validation/*"
-      ],
-      "@middlewares/*": [
-        "middlewares/*"
-      ],
-      "@routes/*": [
-        "routes/*"
-      ],
-      "@utils/*": [
-        "utils/*"
-      ],
-      "@config/*": [
-        "config/*"
-      ]
+      "@services/*": ["services/*"],
+      "@controllers/*": ["controllers/*"],
+      "@models/*": ["models/*"],
+      "@validation/*": ["validation/*"],
+      "@middlewares/*": ["middlewares/*"],
+      "@routes/*": ["routes/*"],
+      "@utils/*": ["utils/*"],
+      "@config/*": ["config/*"]
     }
   },
   "include": [
-    "src/**/*.ts"
+    "src",
+    "src/@types"
   ],
   "exclude": [
     "node_modules"
