@@ -1,4 +1,4 @@
-import { BadRequestError } from '@utils/Errors';
+import { UnauthorizedError } from '@utils/Errors';
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
@@ -6,7 +6,7 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
     const authHeader = req.headers.authorization;
 
     if (!authHeader?.startsWith('Bearer ')) {
-        throw new BadRequestError('Token não fornecido ou inválido.');
+        throw new UnauthorizedError('Token não fornecido ou inválido.');
     }
 
     const token = authHeader.split(' ')[1];
