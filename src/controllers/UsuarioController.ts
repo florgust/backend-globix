@@ -29,7 +29,7 @@ export const getUsuarioById = asyncHandler(async (req: Request, res: Response): 
 export const createUsuario = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     console.log('POST /usuarios - Dados recebidos para criação:', req.body);
     const validetData = usuarioSchema.parse(req.body);
-
+    console.log('POST /usuarios - Dados validados para criação:', validetData);
     const novoUsuario = await UsuarioService.createUsuario(validetData);
 
     console.log('POST /usuarios - Usuário criado com sucesso:', novoUsuario);

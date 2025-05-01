@@ -32,6 +32,7 @@ exports.getViagemById = (0, AsyncHandler_1.asyncHandler)((req, res) => __awaiter
 exports.createViagem = (0, AsyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('POST /viagens - Dados recebidos para criação:', req.body);
     const validatedData = ViagemValidation_1.createViagemSchema.parse(req.body);
+    console.log('POST /viagens - Dados validados para criação:', req.body);
     const viagem = yield ViagemService_1.ViagemService.createViagem(validatedData);
     console.log('POST /viagens - Viagem criada com sucesso:', viagem);
     res.status(201).send(viagem);
@@ -53,3 +54,4 @@ exports.deleteViagem = (0, AsyncHandler_1.asyncHandler)((req, res) => __awaiter(
     console.log(`DELETE /viagens/${id} - Viagem deletada com sucesso`);
     res.status(200).send('Viagem deletada com sucesso');
 }));
+//# sourceMappingURL=ViagemController.js.map

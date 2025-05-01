@@ -4,7 +4,12 @@ import { NotFoundError } from '@utils/Errors';
 export class ViagemService {
     // Buscar todas as viagens
     public static async getViagens(): Promise<ViagemAttributes[]> {
-        return Viagem.findAll();
+        try {
+            return await Viagem.findAll();
+        } catch (error) {
+            console.error('Erro ao buscar viagens:', error); // Exibe o erro completo
+            throw error; // Repassa o erro para ser tratado no controller
+        }
     }
 
     // Buscar viagem por ID

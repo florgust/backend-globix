@@ -12,3 +12,4 @@ router.post('/viagem', ViagemController_1.createViagem);
 router.put('/viagem/:id', ViagemController_1.updateViagem);
 router.delete('/viagem/:id', ViagemController_1.deleteViagem);
 exports.default = router;
+//# sourceMappingURL=ViagemRouter.js.map

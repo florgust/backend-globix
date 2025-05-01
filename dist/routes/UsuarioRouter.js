@@ -13,3 +13,4 @@ router.post('/usuario', UsuarioController_1.createUsuario); // Criar um novo usu
 router.put('/usuario/:id', UsuarioController_1.updateUsuario); // Atualizar um usuário existente
 router.put('/usuario/:id/delete', UsuarioController_1.deleteUsuario); // Alterar o status de um usuário para 0 (desativar)
 exports.default = router;
+//# sourceMappingURL=UsuarioRouter.js.map

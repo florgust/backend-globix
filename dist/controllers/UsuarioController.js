@@ -32,6 +32,7 @@ exports.getUsuarioById = (0, AsyncHandler_1.asyncHandler)((req, res) => __awaite
 exports.createUsuario = (0, AsyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('POST /usuarios - Dados recebidos para criação:', req.body);
     const validetData = UsuarioValidation_1.usuarioSchema.parse(req.body);
+    console.log('POST /usuarios - Dados validados para criação:', validetData);
     const novoUsuario = yield UsuarioService_1.UsuarioService.createUsuario(validetData);
     console.log('POST /usuarios - Usuário criado com sucesso:', novoUsuario);
     res.status(201).json(novoUsuario);
@@ -54,3 +55,4 @@ exports.deleteUsuario = (0, AsyncHandler_1.asyncHandler)((req, res) => __awaiter
     console.log(`DELETE /usuarios/${id} - Usuário desativado com sucesso`);
     res.json({ message: 'Usuário desativado com sucesso.' });
 }));
+//# sourceMappingURL=UsuarioController.js.map

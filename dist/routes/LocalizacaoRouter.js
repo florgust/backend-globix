@@ -13,3 +13,4 @@ router.post('/localizacao', LocalizacaoController_1.createLocalizacao); // Criar
 router.put('/localizacao/:id', LocalizacaoController_1.updateLocalizacao); // Atualizar uma localização existente
 router.delete('/localizacao/:id', LocalizacaoController_1.deleteLocalizacao); // Deletar uma localização
 exports.default = router;
+//# sourceMappingURL=LocalizacaoRouter.js.map

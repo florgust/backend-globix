@@ -19,7 +19,13 @@ class ViagemService {
     // Buscar todas as viagens
     static getViagens() {
         return __awaiter(this, void 0, void 0, function* () {
-            return Viagem_1.default.findAll();
+            try {
+                return yield Viagem_1.default.findAll();
+            }
+            catch (error) {
+                console.error('Erro ao buscar viagens:', error); // Exibe o erro completo
+                throw error; // Repassa o erro para ser tratado no controller
+            }
         });
     }
     // Buscar viagem por ID
@@ -81,3 +87,4 @@ class ViagemService {
     }
 }
 exports.ViagemService = ViagemService;
+//# sourceMappingURL=ViagemService.js.map

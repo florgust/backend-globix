@@ -8,4 +8,6 @@ exports.createViagemSchema = zod_1.z.object({
     dataInicio: zod_1.z.preprocess((value) => new Date(value), zod_1.z.date({ invalid_type_error: 'A data início deve ser uma data válida.' })),
     dataFim: zod_1.z.preprocess((value) => new Date(value), zod_1.z.date({ invalid_type_error: 'A data fim deve ser uma data válida.' })),
     criadorId: zod_1.z.number().int().positive('O ID do criador deve ser um número inteiro positivo'),
+    tipo: zod_1.z.string().max(50, 'O tipo deve ter no máximo 50 caracteres'),
 });
+//# sourceMappingURL=ViagemValidation.js.map

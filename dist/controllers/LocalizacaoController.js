@@ -43,3 +43,4 @@ exports.deleteLocalizacao = (0, AsyncHandler_1.asyncHandler)((req, res) => __awa
     yield LocalizacaoService_1.LocalizacaoService.deleteLocalizacao(Number(id));
     res.json({ message: 'Localização deletada com sucesso.' });
 }));
+//# sourceMappingURL=LocalizacaoController.js.map
