@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "clean": "rimraf dist",
+    "build": "npm run clean && tsc",
     "start": "node dist/app.js",
-    "dev": "nodemon -r tsconfig-paths/register src/app.ts",
+    "dev": "ts-node-dev --respawn --transpile-only --require tsconfig-paths/register src/app.ts",
     "heroku-postbuild": "npm run build"
   },
   "keywords": [],
@@ -36,16 +37,17 @@
     "@types/sequelize": "^4.28.20",
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.2"
   },
   "_moduleAliases": {
-    "@services": "dist/services",
-    "@controllers": "dist/controllers",
-    "@models": "dist/models",
-    "@validation": "dist/validation",
-    "@middlewares": "dist/middlewares",
-    "@routes": "dist/routes",
-    "@utils": "dist/utils",
-    "@config": "dist/config"
+    "@services": "src/services",
+    "@controllers": "src/controllers",
+    "@models": "src/models",
+    "@validation": "src/validation",
+    "@middlewares": "src/middlewares",
+    "@routes": "src/routes",
+    "@utils": "src/utils",
+    "@config": "src/config"
   }
 }
