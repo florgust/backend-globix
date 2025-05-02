@@ -10,10 +10,14 @@ export const errorDefaultHandler = (customMessage = 'Erro interno do servidor') 
         if (err instanceof ZodError) {
             res.status(400).json({
                 error: 'Erro de validação',
-                details: err.errors,
+                details: err.errors.map((e) => ({
+                    campo: e.path.join('.'), // Nome do campo com erro
+                    mensagem: e.message, // Mensagem de erro personalizada
+                })),
             });
             return; // Interrompe a execução sem retornar um valor
         }
+
 
         // Verifica se é um erro personalizado
         if (err instanceof NotFoundError || err instanceof BadRequestError || err instanceof UnauthorizedError || err instanceof InternalServerError) {
