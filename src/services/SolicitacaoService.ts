@@ -67,6 +67,25 @@ export class SolicitacaoService {
         });
     }
 
+    static async promoverOuDespromoverOrganizadorSolicitacao(idViagem: number, idUsuarioOrganizador: number, idUsuarioSolicitante: number) {
+        // Verifica se o usuário solicitante já é um organizador
+        const solicitacaoSolicitante = await Solicitacao.findOne({
+            where: {
+                idViagem,
+                idUsuario: idUsuarioSolicitante,
+            },
+        });
+
+        if (!solicitacaoSolicitante) {
+            throw new NotFoundError("Solicitação do usuário solicitante não encontrada.");
+        }
+
+        // Atualiza o papel do solicitante para organizador ou vice-versa
+        solicitacaoSolicitante.papel = solicitacaoSolicitante.papel === "organizadorPromovido" ? "participante" : "organizadorPromovido";
+        await solicitacaoSolicitante.save();
+
+        return solicitacaoSolicitante;
+    }
     // Atualizar o status de uma solicitação
     static async atualizarStatusSolicitacao(idViagem: number, idUsuario: number) {
         const solicitacao = await Solicitacao.findOne({ where: { idViagem, idUsuario } });

@@ -7,7 +7,7 @@ import Viagem from './Viagem';
 export interface SolicitacaoAttributes {
     idViagem: number;
     idUsuario: number;
-    papel: 'organizador' | 'participante';
+    papel: 'organizador' | 'participante' | 'organizadorPromovido';
     status: number;
     dataCriacao: Date;
     dataAtualizacao: Date;
@@ -17,7 +17,7 @@ export interface SolicitacaoAttributes {
 class Solicitacao extends Model<SolicitacaoAttributes> implements SolicitacaoAttributes {
     public idViagem!: number;
     public idUsuario!: number;
-    public papel!: 'organizador' | 'participante';
+    public papel!: 'organizador' | 'participante' | 'organizadorPromovido';
     public status!: number;
     public dataCriacao!: Date;
     public dataAtualizacao!: Date;
@@ -48,7 +48,7 @@ Solicitacao.init(
             onUpdate: 'CASCADE',
         },
         papel: {
-            type: DataTypes.ENUM('organizador', 'participante'),
+            type: DataTypes.ENUM('organizador', 'participante', 'organizadorPromovido'),
             allowNull: false,
             defaultValue: 'participante',
         },
