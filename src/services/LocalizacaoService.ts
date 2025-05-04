@@ -1,5 +1,5 @@
 import Localizacao, { LocalizacaoAttributes as LocalizacaoType } from "@models/Localizacao";
-import { NotFoundError, BadRequestError } from "@utils/Errors";
+import { NotFoundError } from "@utils/Errors";
 
 export class LocalizacaoService {
     // Buscar todas as localizações
@@ -18,9 +18,6 @@ export class LocalizacaoService {
 
     // Criar nova localização com validação
     static async createLocalizacao(data: Omit<LocalizacaoType, "id" | "dataCriacao" | "dataAtualizacao">): Promise<LocalizacaoType> {
-        if (!data.nome) {
-            throw new BadRequestError("O campo 'nome' é obrigatório.");
-        }
         return await Localizacao.create({
             ...data,
             dataCriacao: new Date(),

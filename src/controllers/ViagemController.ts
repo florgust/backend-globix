@@ -29,7 +29,7 @@ export const getViagemById = asyncHandler(async (req: Request, res: Response): P
 export const createViagem = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     console.log('POST /viagens - Dados recebidos para criação:', req.body);
     const validatedData = createViagemSchema.parse(req.body);
-
+    console.log('POST /viagens - Dados validados para criação:', req.body);
     const viagem = await ViagemService.createViagem(validatedData);
 
     console.log('POST /viagens - Viagem criada com sucesso:', viagem);

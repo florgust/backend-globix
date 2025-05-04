@@ -3,7 +3,9 @@ import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import localizacaoRouter from '@routes/LocalizacaoRouter';
 import viagemRoutes from '@routes/ViagemRouter';
-import usuarioroutes from '@routes/UsuarioRouter';
+import transporteRoutes from '@routes/TransporteRouter';
+import itinerarioRoutes from '@routes/ItinerarioRouter';
+import usuarioRoutes from '@routes/UsuarioRouter';
 import solicitacoesroutes from '@routes/SolicitacaoRouter';
 import login from '@routes/LoginRouter';
 import { errorDefaultHandler } from '@middlewares/ErrorHandler';
@@ -18,7 +20,9 @@ app.use(cors());
 
 app.use('/', viagemRoutes);
 app.use('/', localizacaoRouter);
-app.use('/', usuarioroutes);
+app.use('/', transporteRoutes);
+app.use('/', itinerarioRoutes);
+app.use('/', usuarioRoutes);
 app.use('/', solicitacoesroutes);
 app.use('/', login);
 

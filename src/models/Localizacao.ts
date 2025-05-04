@@ -6,10 +6,14 @@ export interface LocalizacaoAttributes {
     id?: number;
     idViagem: number;
     nome: string;
-    enderecoPartida: string;
-    enderecoChegada: string;
-    dataPartida: Date;
-    dataChegada: Date;
+    idaEnderecoPartida: string;
+    idaEnderecoChegada: string;
+    idaDataPartida: Date;
+    idaDataChegada: Date;
+    voltaEnderecoPartida: string;
+    voltaEnderecoChegada: string;
+    voltaDataPartida: Date;
+    voltaDataChegada: Date;
     dataCriacao: Date;
     dataAtualizacao: Date;
 }
@@ -19,10 +23,14 @@ class Localizacao extends Model<LocalizacaoAttributes> implements LocalizacaoAtt
     public id!: number;
     public idViagem!: number;
     public nome!: string;
-    public enderecoPartida!: string;
-    public enderecoChegada!: string;
-    public dataPartida!: Date;
-    public dataChegada!: Date;
+    public idaEnderecoPartida!: string;
+    public idaEnderecoChegada!: string;
+    public idaDataPartida!: Date;
+    public idaDataChegada!: Date;
+    public voltaEnderecoPartida!: string;
+    public voltaEnderecoChegada!: string;
+    public voltaDataPartida!: Date;
+    public voltaDataChegada!: Date;
     public dataCriacao!: Date;
     public dataAtualizacao!: Date;
 }
@@ -49,19 +57,35 @@ Localizacao.init(
             type: DataTypes.STRING(100),
             allowNull: false,
         },
-        enderecoPartida: {
+        idaEnderecoPartida: {
             type: DataTypes.STRING(255),
             allowNull: false,
         },
-        enderecoChegada: {
+        idaEnderecoChegada: {
             type: DataTypes.STRING(255),
             allowNull: false,
         },
-        dataPartida: {
+        idaDataPartida: {
             type: DataTypes.DATEONLY,
             allowNull: false,
         },
-        dataChegada: {
+        idaDataChegada: {
+            type: DataTypes.DATEONLY,
+            allowNull: false,
+        },
+        voltaEnderecoPartida: {
+            type: DataTypes.STRING(255),
+            allowNull: false,
+        },
+        voltaEnderecoChegada: {
+            type: DataTypes.STRING(255),
+            allowNull: false,
+        },
+        voltaDataPartida: {
+            type: DataTypes.DATEONLY,
+            allowNull: false,
+        },
+        voltaDataChegada: {
             type: DataTypes.DATEONLY,
             allowNull: false,
         },
