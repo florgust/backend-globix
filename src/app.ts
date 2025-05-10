@@ -1,4 +1,4 @@
-require('module-alias/register');
+import 'module-alias/register';
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import localizacaoRouter from '@routes/LocalizacaoRouter';
