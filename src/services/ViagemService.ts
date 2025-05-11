@@ -21,6 +21,15 @@ export class ViagemService {
         return viagem;
     }
 
+    // Buscar viagem por código de convite
+    public static async getViagemByCodigoConvite(codigoConvite: number): Promise<ViagemAttributes> {
+        const viagem = await Viagem.findOne({ where: { codigoConvite } });
+        if (!viagem) {
+            throw new NotFoundError('Viagem não encontrada com o código de convite fornecido.');
+        }
+        return viagem;
+    }
+
     // Criar nova viagem com validação
     static async createViagem(data: Omit<ViagemAttributes, 'id' | 'codigoConvite' | 'status' | 'dataCriacao' | 'dataAtualizacao'>): Promise<ViagemAttributes> {
         // Criar a viagem no banco de dados com dataCriacao e dataAtualizacao

@@ -25,6 +25,17 @@ export const getViagemById = asyncHandler(async (req: Request, res: Response): P
     res.status(200).send(viagem);
 });
 
+// Buscar viagem por código de convite
+export const getViagemByCodigoConvite = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const codigoConvite = parseInt(req.params.codigoConvite);
+    console.log(`GET /viagens/codigo/${codigoConvite} - Iniciando busca da viagem com código de convite ${codigoConvite}`);
+
+    const viagem = await ViagemService.getViagemByCodigoConvite(codigoConvite);
+
+    console.log(`GET /viagens/codigo/${codigoConvite} - Viagem encontrada:`, viagem);
+    res.status(200).send(viagem);
+});
+
 // Criar uma nova viagem
 export const createViagem = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     console.log('POST /viagens - Dados recebidos para criação:', req.body);
