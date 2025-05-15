@@ -9,6 +9,8 @@ import usuarioRoutes from '@routes/UsuarioRouter';
 import solicitacoesroutes from '@routes/SolicitacaoRouter';
 import login from '@routes/LoginRouter';
 import { errorDefaultHandler } from '@middlewares/ErrorHandler';
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('@config/swagger');
 
 const cors = require('cors');
 
@@ -25,6 +27,8 @@ app.use('/', itinerarioRoutes);
 app.use('/', usuarioRoutes);
 app.use('/', solicitacoesroutes);
 app.use('/', login);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(errorDefaultHandler());
 
