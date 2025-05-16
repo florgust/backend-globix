@@ -7,4 +7,5 @@ export const createViagemSchema = z.object({
     dataFim: z.preprocess((value) => new Date(value as string), z.date({ invalid_type_error: 'A data fim deve ser uma data válida.' })),
     criadorId: z.number().int().positive('O ID do criador deve ser um número inteiro positivo'),
     tipo: z.string().max(50, 'O tipo deve ter no máximo 50 caracteres'),
+    quantidadeParticipante: z.number().int().positive('A quantidade de participantes deve ser um número inteiro positivo'),
 });

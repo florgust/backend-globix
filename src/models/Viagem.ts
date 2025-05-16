@@ -14,7 +14,7 @@ export interface ViagemAttributes {
     dataCriacao: Date;
     dataAtualizacao: Date;
     tipo: string;
-    quantidadeParticipante?: number;
+    quantidadeParticipante: number;
 }
 
 //Definindo o modelo 'Viagem'
@@ -30,7 +30,7 @@ class Viagem extends Model<ViagemAttributes> implements ViagemAttributes {
     public dataCriacao!: Date;
     public dataAtualizacao!: Date;
     public tipo!: string;
-    public quantidadeParticipante?: number;
+    public quantidadeParticipante!: number;
 }
 
 Viagem.init(
