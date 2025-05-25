@@ -71,6 +71,7 @@ export class SolicitacaoService {
             include: [
                 {
                     model: Viagem,
+                    as: 'viagem',
                     where: {
                         [Op.or]: [
                             {
