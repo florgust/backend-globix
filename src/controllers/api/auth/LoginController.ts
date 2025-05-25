@@ -8,5 +8,6 @@ export const login = asyncHandler(async (req: Request, res: Response): Promise<v
     const validateLogin = loginSchema.parse(req.body);
 
     const result = await LoginService.validateUser(validateLogin.email, validateLogin.senha);
-    res.status(200).json({token: result.token});
+    console.log(result);
+    res.status(200).json({token: result.token, usuario: result.usuario});
 });
