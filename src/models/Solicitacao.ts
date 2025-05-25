@@ -12,6 +12,16 @@ export interface SolicitacaoAttributes {
     dataCriacao: Date;
     dataAtualizacao: Date;
 }
+export interface SolicitacaoViagemCard {
+    id: number;
+    nome: string;
+    imagem: string;
+    dataInicio: string;
+    dataFim: string;
+    organizador: string;
+    transporte: string;
+    papel: string;
+}
 
 // Definição do modelo 'Solicitacao'
 class Solicitacao extends Model<SolicitacaoAttributes> implements SolicitacaoAttributes {
@@ -77,9 +87,9 @@ Solicitacao.init(
 );
 
 // Definição das associações
-Usuario.hasMany(Solicitacao, { foreignKey: 'idUsuario' });
-Viagem.hasMany(Solicitacao, { foreignKey: 'idViagem' });
-Solicitacao.belongsTo(Usuario, { foreignKey: 'idUsuario' });
-Solicitacao.belongsTo(Viagem, { foreignKey: 'idViagem' });
+Usuario.hasMany(Solicitacao, { foreignKey: 'idUsuario', as: 'solicitacoes' });
+Viagem.hasMany(Solicitacao, { foreignKey: 'idViagem', as: 'solicitacoes' });
+Solicitacao.belongsTo(Usuario, { foreignKey: 'idUsuario', as: 'usuario' });
+Solicitacao.belongsTo(Viagem, { foreignKey: 'idViagem', as: 'viagem' });
 
 export default Solicitacao;

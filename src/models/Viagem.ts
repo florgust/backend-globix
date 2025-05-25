@@ -1,5 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/database';
+import Usuario from './Usuario';
 
 //Definindo a interface para o modelo
 export interface ViagemAttributes {
@@ -94,4 +95,5 @@ Viagem.init(
     }
 );
 
+Viagem.belongsTo(Usuario, { foreignKey: 'criadorId', as: 'criador' });
 export default Viagem;

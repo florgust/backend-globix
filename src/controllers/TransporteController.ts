@@ -16,6 +16,13 @@ export const getTransporteById = asyncHandler(async (req: Request, res: Response
     res.status(200).send(transporte);
 });
 
+export const getTransporteByIdViagem = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const viagemId = parseInt(req.params.viagemId);
+    console.log('ID da viagem: ', viagemId);
+    const transporte = await TransporteService.getTransporteByIdViagem(viagemId);
+    res.status(200).send(transporte);
+});
+
 // Criar um novo transporte
 export const createTransporte = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const validatedData = transporteSchema.parse(req.body); // Validação dos dados

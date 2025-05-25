@@ -2,6 +2,8 @@ import Solicitacao from '@models/Solicitacao';
 import Viagem from '@models/Viagem';
 import { Op } from 'sequelize';
 import { NotFoundError, BadRequestError } from '@utils/Errors';
+import Usuario from '@models/Usuario';
+import Transporte from '@models/Transporte';
 
 export class SolicitacaoService {
     // Buscar todas as solicitações de um usuário
@@ -12,6 +14,47 @@ export class SolicitacaoService {
     // Buscar todas as solicitações de uma viagem
     static async getSolicitacoesPorViagem(idViagem: number) {
         return await Solicitacao.findAll({ where: { idViagem } });
+    }
+
+    // Buscar todas as solicitações de uma viagem para o card
+    static async getSolicitacoesViagemToCard(idUsuario: number) {
+        // Busca todas as solicitações do usuário
+        const solicitacoes = await Solicitacao.findAll({
+            where: { idUsuario },
+            include: [
+                {
+                    model: Viagem,
+                    as: 'viagem',
+                    include: [
+                        {
+                            model: Usuario,
+                            as: 'criador', // ajuste conforme associação
+                            attributes: ['nome']
+                        },
+                        {
+                            model: Transporte,
+                            as: 'transportes', // ajuste conforme associação
+                            attributes: ['tipoTransporte']
+                        }
+                    ]
+                }
+            ]
+        });
+
+        // Monta o retorno no formato desejado
+        return solicitacoes.map((solicitacao: any) => {
+            const viagem = solicitacao.viagem;
+            return {
+                id: viagem.id,
+                nome: viagem.nome,
+                imagem: "/images-my_trips/rifaina.png",
+                dataInicio: viagem.dataInicio,
+                dataFim: viagem.dataFim,
+                organizador: viagem.criador?.nome ?? "",
+                transporte: viagem.transportes?.[0]?.tipoTransporte ?? "",
+                papel: solicitacao.papel
+            };
+        });
     }
 
     static async criarSolicitacao(idViagem: number, idUsuario: number) {
