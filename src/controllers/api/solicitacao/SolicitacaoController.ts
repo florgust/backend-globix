@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { SolicitacaoService } from '@services/SolicitacaoService';
-import { SolicitacaoAttributes } from '@models/Solicitacao';
+import { SolicitacaoAttributes, SolicitacaoViagemCard } from '@models/Solicitacao';
 import { asyncHandler } from '@middlewares/AsyncHandler';
 
 // Buscar todas as solicitações de um usuário
@@ -14,6 +14,12 @@ export const getSolicitacoesPorUsuario = asyncHandler(async (req: Request, res: 
 export const getSolicitacoesPorViagem = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { idViagem } = req.params;
     const solicitacoes: SolicitacaoAttributes[] = await SolicitacaoService.getSolicitacoesPorViagem(Number(idViagem));
+    res.status(200).json(solicitacoes);
+});
+
+export const getSolicitacoesViagemToCard = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const { idUsuario } = req.params;
+    const solicitacoes: SolicitacaoViagemCard[] = await SolicitacaoService.getSolicitacoesViagemToCard(Number(idUsuario));
     res.status(200).json(solicitacoes);
 });
 

@@ -16,6 +16,16 @@ export class TransporteService {
         return transporte;
     }
 
+    // Buscar transporte por ID da Viagem
+    static async getTransporteByIdViagem(viagemId: number): Promise<TransporteAttributes[]> {
+        console.log('ID da viagem: ', viagemId);
+        const transportes = await Transporte.findAll({ where: { viagemId } });
+        if (!transportes || transportes.length === 0) {
+            throw new NotFoundError('Nenhum transporte encontrado para esta viagem.');
+        }
+        return transportes;
+    }
+
     // Criar um novo transporte
     static async createTransporte(data: Omit<TransporteAttributes, 'id'>): Promise<TransporteAttributes> {
         return await Transporte.create({
