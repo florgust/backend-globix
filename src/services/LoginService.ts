@@ -4,7 +4,7 @@ import Usuario from '@models/Usuario';
 import { BadRequestError, NotFoundError } from '@utils/Errors';
 
 class LoginService {
-  static async validateUser(email: string, senha: string): Promise<{ token: string }> {
+  static async validateUser(email: string, senha: string): Promise<{ token: string; usuario: { [key: string]: any } }> {
     // Busca o usuário no banco de dados pelo email
     const usuario = await Usuario.findOne(
       {
@@ -32,7 +32,12 @@ class LoginService {
       email: usuario.email,
     });
 
-    return { token: `Bearer ${token}` };
+    // ...existing code...
+    const usuarioSemSenha = usuario.toJSON() as { [key: string]: any };
+    delete usuarioSemSenha.senha;
+
+    return { token: `Bearer ${token}`, usuario: usuarioSemSenha };
+// ...existing code...
   }
 
   private static generateToken(payload: { id: number; nome: string; email: string }): string {
