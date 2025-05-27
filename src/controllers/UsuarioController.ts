@@ -49,6 +49,19 @@ export const updateUsuario = asyncHandler(async (req: Request, res: Response): P
     res.json(usuarioAtualizado);
 });
 
+// Atualizar senha do usuário
+export const updateUsuarioSenha = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    console.log(`PUT /usuarios/senha/${id}`);
+    const { senhaAtual, senhaNova } = req.body;
+
+    // Chama o serviço para atualizar a senha do usuário
+    await UsuarioService.updateSenhaUsuario(Number(id), senhaAtual, senhaNova);
+
+    console.log(`PUT /usuarios/senha/${id} - Senha do usuário atualizada com sucesso`);
+    res.json({ message: 'Senha atualizada com sucesso.' });
+});
+
 // Deletar usuário (alterar status para 0)
 export const deleteUsuario = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;

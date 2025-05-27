@@ -14,6 +14,7 @@ router.get('/usuarios', getUsuarios); // Buscar todos os usuários
 router.get('/usuario/:id', getUsuarioById); // Buscar um usuário por ID
 router.post('/usuario', createUsuario); // Criar um novo usuário
 router.put('/usuario/:id', updateUsuario); // Atualizar um usuário existente
+router.put('/usuario/senha/:id', updateUsuario); // Atualizar a senha de um usuário
 router.put('/usuario/:id/delete', deleteUsuario); // Alterar o status de um usuário para 0 (desativar)
 
 export default router;

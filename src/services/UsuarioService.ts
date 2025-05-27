@@ -1,6 +1,6 @@
 import Usuario, { UsuarioAttributes } from '@models/Usuario';
 import { PasswordUtils } from '@utils/PasswordUtils';
-import { NotFoundError, BadRequestError } from '@utils/Errors';
+import { NotFoundError, BadRequestError, UnauthorizedError } from '@utils/Errors';
 
 export class UsuarioService {
     // Buscar todos os usuários ativos (status = 1)
@@ -60,6 +60,25 @@ export class UsuarioService {
             ...data,
             dataAtualizacao: new Date(),
         });
+    }
+
+    static async updateSenhaUsuario(id: number, senhaAtual: string, novaSenha: string): Promise<void> {
+        const usuario = await Usuario.findByPk(id);
+        if (!usuario) {
+            throw new NotFoundError('Usuário não encontrado.');
+        }
+
+        // Valida a senha atual
+        const senhaCorreta = await PasswordUtils.comparePassword(senhaAtual, usuario.senha);
+        if (!senhaCorreta) {
+            throw new UnauthorizedError('Senha atual incorreta.');
+        }
+
+        // Atualiza a senha
+        const hashedNovaSenha = await PasswordUtils.hashPassword(novaSenha);
+        usuario.senha = hashedNovaSenha;
+        usuario.dataAtualizacao = new Date();
+        await usuario.save();
     }
 
     // Deletar usuário (alterar status para 0)
