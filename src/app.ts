@@ -1,13 +1,17 @@
 import 'module-alias/register';
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
+
 import localizacaoRouter from '@routes/LocalizacaoRouter';
 import viagemRoutes from '@routes/ViagemRouter';
 import transporteRoutes from '@routes/TransporteRouter';
 import itinerarioRoutes from '@routes/ItinerarioRouter';
 import usuarioRoutes from '@routes/UsuarioRouter';
 import solicitacoesroutes from '@routes/SolicitacaoRouter';
+import orcamentoRoutes from '@routes/OrcamentoRouter';
 import login from '@routes/LoginRouter';
+
+
 import { errorDefaultHandler } from '@middlewares/ErrorHandler';
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('@config/swagger');
@@ -26,6 +30,7 @@ app.use('/', transporteRoutes);
 app.use('/', itinerarioRoutes);
 app.use('/', usuarioRoutes);
 app.use('/', solicitacoesroutes);
+app.use('/', orcamentoRoutes);
 app.use('/', login);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
