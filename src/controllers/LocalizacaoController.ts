@@ -19,6 +19,13 @@ export const getLocalizacaoById = asyncHandler(async (req: Request, res: Respons
     res.status(200).json(localizacao);
 });
 
+export const getLocalizacaoByIdViagem = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const { idViagem } = req.params;
+    const localizacoes = await LocalizacaoService.getLocalizacaoByIdViagem(Number(idViagem));
+    res.status(200).json(localizacoes);
+});
+
+
 // Criar uma nova localização
 export const createLocalizacao = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const parsedData = localizacaoSchema.parse(req.body);
@@ -43,6 +50,6 @@ export const deleteLocalizacao = asyncHandler(async (req: Request, res: Response
     const { id } = req.params;
 
     await LocalizacaoService.deleteLocalizacao(Number(id));
-    
+
     res.json({ message: 'Localização deletada com sucesso.' });
 });
