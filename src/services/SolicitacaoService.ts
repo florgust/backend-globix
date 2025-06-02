@@ -66,39 +66,7 @@ export class SolicitacaoService {
         }
 
         // Verificar se o usuário já possui uma solicitação ou participação em viagens com conflito de datas
-        const conflitos = await Solicitacao.findAll({
-            where: { idUsuario },
-            include: [
-                {
-                    model: Viagem,
-                    as: 'viagem',
-                    where: {
-                        [Op.or]: [
-                            {
-                                dataInicio: {
-                                    [Op.between]: [viagemSolicitada.dataInicio, viagemSolicitada.dataFim],
-                                },
-                            },
-                            {
-                                dataFim: {
-                                    [Op.between]: [viagemSolicitada.dataInicio, viagemSolicitada.dataFim],
-                                },
-                            },
-                            {
-                                [Op.and]: [
-                                    { dataInicio: { [Op.lte]: viagemSolicitada.dataInicio } },
-                                    { dataFim: { [Op.gte]: viagemSolicitada.dataFim } },
-                                ],
-                            },
-                        ],
-                    },
-                },
-            ],
-        });
-
-        if (conflitos.length > 0) {
-            throw new BadRequestError("O usuário já possui uma solicitação ou participação em uma viagem com conflito de datas.");
-        }
+        await this.validarConflitoSolicitacao(idUsuario, viagemSolicitada);
 
         // Criar a nova solicitação
         return await Solicitacao.create({
@@ -106,6 +74,27 @@ export class SolicitacaoService {
             idUsuario: idUsuario,
             papel: "participante",
             status: 0,
+            dataCriacao: new Date(),
+            dataAtualizacao: new Date(),
+        });
+    }
+
+    static async criarSolicitacaoCriadorViagem(idViagem: number, idUsuario: number) {
+        const viagemSolicitada = await Viagem.findByPk(idViagem);
+
+        if (!viagemSolicitada) {
+            throw new NotFoundError("A viagem solicitada não existe.");
+        }
+
+        // Validação extraída
+        await this.validarConflitoSolicitacao(idUsuario, viagemSolicitada);
+
+        // Criar a solicitação como organizador e status 1
+        return await Solicitacao.create({
+            idViagem: idViagem,
+            idUsuario: idUsuario,
+            papel: "organizador",
+            status: 1,
             dataCriacao: new Date(),
             dataAtualizacao: new Date(),
         });
@@ -144,5 +133,41 @@ export class SolicitacaoService {
         await solicitacao.save();
 
         return solicitacao;
+    }
+
+    private static async validarConflitoSolicitacao(idUsuario: number, viagemSolicitada: any) {
+        const conflitos = await Solicitacao.findAll({
+            where: { idUsuario },
+            include: [
+                {
+                    model: Viagem,
+                    as: 'viagem',
+                    where: {
+                        [Op.or]: [
+                            {
+                                dataInicio: {
+                                    [Op.between]: [viagemSolicitada.dataInicio, viagemSolicitada.dataFim],
+                                },
+                            },
+                            {
+                                dataFim: {
+                                    [Op.between]: [viagemSolicitada.dataInicio, viagemSolicitada.dataFim],
+                                },
+                            },
+                            {
+                                [Op.and]: [
+                                    { dataInicio: { [Op.lte]: viagemSolicitada.dataInicio } },
+                                    { dataFim: { [Op.gte]: viagemSolicitada.dataFim } },
+                                ],
+                            },
+                        ],
+                    },
+                },
+            ],
+        });
+
+        if (conflitos.length > 0) {
+            throw new BadRequestError("O usuário já possui uma solicitação ou participação em uma viagem com conflito de datas.");
+        }
     }
 }
