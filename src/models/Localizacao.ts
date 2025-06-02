@@ -66,11 +66,11 @@ Localizacao.init(
             allowNull: false,
         },
         idaDataPartida: {
-            type: DataTypes.DATEONLY,
+            type: DataTypes.DATE,
             allowNull: false,
         },
         idaDataChegada: {
-            type: DataTypes.DATEONLY,
+            type: DataTypes.DATE,
             allowNull: false,
         },
         voltaEnderecoPartida: {
@@ -82,11 +82,11 @@ Localizacao.init(
             allowNull: false,
         },
         voltaDataPartida: {
-            type: DataTypes.DATEONLY,
+            type: DataTypes.DATE,
             allowNull: false,
         },
         voltaDataChegada: {
-            type: DataTypes.DATEONLY,
+            type: DataTypes.DATE,
             allowNull: false,
         },
         dataCriacao: {
