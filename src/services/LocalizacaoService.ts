@@ -16,6 +16,14 @@ export class LocalizacaoService {
         return localizacao;
     }
 
+    static async getLocalizacaoByIdViagem(idViagem: number): Promise<LocalizacaoType[]> {
+        const localizacoes = await Localizacao.findAll({ where: { idViagem } });
+        if (!localizacoes || localizacoes.length === 0) {
+            throw new NotFoundError("Nenhuma localização encontrada para esta viagem.");
+        }
+        return localizacoes;
+    }
+
     // Criar nova localização com validação
     static async createLocalizacao(data: Omit<LocalizacaoType, "id" | "dataCriacao" | "dataAtualizacao">): Promise<LocalizacaoType> {
         return await Localizacao.create({
