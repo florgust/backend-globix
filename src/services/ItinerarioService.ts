@@ -16,6 +16,13 @@ export class ItinerarioService {
         return itinerario;
     }
 
+    // Buscar itinerários por ID da Viagem
+    static async getItinerarioByIdViagem(viagemId: number): Promise<ItinerarioAttributes[]> {
+        return await Itinerario.findAll({
+            where: { viagemId }
+        });
+    }
+
     // Criar um novo itinerário
     static async createItinerario(data: Omit<ItinerarioAttributes, 'id'>): Promise<ItinerarioAttributes> {
         return await Itinerario.create({
