@@ -16,6 +16,13 @@ export const getItinerarioById = asyncHandler(async (req: Request, res: Response
     res.status(200).send(itinerario);
 });
 
+// Buscar itinerário por ID da Viagem
+export const getItinerarioByIdViagem = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const id = parseInt(req.params.id);
+    const itinerario = await ItinerarioService.getItinerarioByIdViagem(id);
+    res.status(200).send(itinerario);
+});
+
 // Criar um novo itinerário
 export const createItinerario = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const validatedData = itinerarioSchema.parse(req.body); // Validação dos dados
