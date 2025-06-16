@@ -16,6 +16,14 @@ export class OrcamentoService {
         return orcamento;
     }
 
+    // Buscar orçamento por ID
+    static async getOrcamentoByIdViagem(id: number): Promise<OrcamentoType[]> {
+        return await Orcamento.findAll({
+                where: { viagemId: id}
+        });
+    }
+
+
     // Criar novo orçamento
     static async createOrcamento(data: Omit<OrcamentoType, "id" | "dataCriacao" | "dataAtualizacao">): Promise<OrcamentoType> {
         return await Orcamento.create({
