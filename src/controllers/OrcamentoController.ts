@@ -17,6 +17,14 @@ export const getOrcamentoById = asyncHandler(async (req: Request, res: Response)
     res.status(200).json(orcamento);
 });
 
+// Buscar orçamento por ID da viagem
+export const getOrcamentoByIdViagem = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    const orcamento: OrcamentoType[] | null = await OrcamentoService.getOrcamentoByIdViagem(Number(id));
+    res.status(200).json(orcamento);
+});
+
+
 // Criar um novo orçamento
 export const createOrcamento = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const parsedData = orcamentoSchema.parse(req.body);
