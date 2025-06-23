@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+const useSSL = process.env.DB_SSL === 'true';
+
 const sequelize = new Sequelize({
     database: process.env.DB_NAME,
     username: process.env.DB_USER,
@@ -12,12 +14,12 @@ const sequelize = new Sequelize({
     dialect: 'postgres',
     protocol: 'postgres',
     logging: console.log,
-    dialectOptions: {
+    dialectOptions: useSSL ? {
         ssl: {
             require: false,
             rejectUnauthorized: false
         }
-    }
+    } : undefined
 });
 
 export default sequelize;
