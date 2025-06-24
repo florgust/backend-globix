@@ -20,7 +20,7 @@ export class SolicitacaoService {
     static async getSolicitacoesViagemToCard(idUsuario: number) {
         // Busca todas as solicitações do usuário
         const solicitacoes = await Solicitacao.findAll({
-            where: { idUsuario },
+            where: { idUsuario, status: 1 },
             include: [
                 {
                     model: Viagem,
