@@ -1,5 +1,10 @@
 import Viagem, { ViagemAttributes } from '@models/Viagem';
+import UsuarioViagem from '@models/Solicitacao'; // Importe o model correto
 import { NotFoundError } from '@utils/Errors';
+import Orcamento from '@models/Orcamento';
+import Transporte from '@models/Transporte';
+import Itinerario from '@models/Itinerario';
+import Localizacao from '@models/Localizacao';
 
 export class ViagemService {
     // Buscar todas as viagens
@@ -85,7 +90,23 @@ export class ViagemService {
             throw new NotFoundError('Viagem não encontrada.');
         }
 
-        await viagem.destroy();
-        return { message: 'Viagem deletada com sucesso!' };
+        await Orcamento.destroy({ where: { viagemId: id } });
+        await Transporte.destroy({ where: { viagemId: id } });
+        await Itinerario.destroy({ where: { viagemId: id } });
+        await Localizacao.destroy({ where: { idViagem: id } });
+
+        await UsuarioViagem.update(
+            { status: 0, dataAtualizacao: new Date() },
+            { where: { idViagem: id } }
+        );
+
+        //alterar o status para 0, marcando como desativado
+        viagem.status = 0;
+        viagem.dataAtualizacao = new Date();
+
+
+        //salvar as alterações
+        await viagem.save();
+        return { message: 'Viagem desativada com sucesso!' };
     }
 }
