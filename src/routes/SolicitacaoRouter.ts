@@ -6,7 +6,8 @@ import {
     criarSolicitacao,
     criarSolicitacaoCriadorViagem,
     atualizarStatusSolicitacao,
-    promoverOuDespromoverOrganizadorSolicitacao
+    promoverOuDespromoverOrganizadorSolicitacao,
+    encerrarViagem
 } from '@controllers/api/solicitacao/SolicitacaoController';
 
 const router = express.Router();
@@ -19,5 +20,6 @@ router.post('/solicitacao/:idUsuario/:idViagem', criarSolicitacao); // Criar uma
 router.post('/solicitacao/criador/:idUsuario/:idViagem', criarSolicitacaoCriadorViagem); // Criar uma solicitação como criador da viagem
 router.post('/solicitacao/promocao/:idViagem/:idUsuarioOrganizador', promoverOuDespromoverOrganizadorSolicitacao); // Promover ou despromover um organizador de viagem
 router.put('/solicitacao/:idViagem/:idUsuario/status', atualizarStatusSolicitacao); // Atualizar o status de uma solicitação
+router.put('/solicitacao/encerrar/:idViagem', encerrarViagem); // Encerrar viagem - inativar todas as solicitações
 
 export default router;

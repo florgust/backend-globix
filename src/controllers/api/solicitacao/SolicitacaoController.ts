@@ -43,6 +43,12 @@ export const promoverOuDespromoverOrganizadorSolicitacao = asyncHandler(async (r
     res.status(201).json(novaSolicitacao);
 });
 
+export const encerrarViagem = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const { idViagem } = req.params;
+    const resultado = await SolicitacaoService.encerrarViagem(Number(idViagem));
+    res.status(200).json(resultado);
+});
+
 // Atualizar o status de uma solicitação
 export const atualizarStatusSolicitacao = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { idViagem, idUsuario } = req.params;

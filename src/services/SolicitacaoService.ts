@@ -174,4 +174,23 @@ export class SolicitacaoService {
             throw new BadRequestError("O usuário já possui uma solicitação ou participação em uma viagem com conflito de datas.");
         }
     }
+
+    static async encerrarViagem(idViagem: number) {
+        const solicitacoes = await Solicitacao.findAll({ where: { idViagem } });
+
+        if (solicitacoes.length === 0) {
+            throw new NotFoundError("Nenhuma solicitação encontrada para esta viagem.");
+        }
+
+        // Atualiza todas as solicitações da viagem para status = 0
+        await Solicitacao.update(
+            {
+                status: 0,
+                dataAtualizacao: new Date()
+            },
+            { where: { idViagem } }
+        );
+
+        return { message: `${solicitacoes.length} solicitações foram inativadas para a viagem ${idViagem}` };
+    }
 }
