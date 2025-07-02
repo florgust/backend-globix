@@ -54,7 +54,8 @@ export class SolicitacaoService {
                 codigoConvite: viagem.codigoConvite,
                 organizador: viagem.criador?.nome ?? "",
                 transporte: viagem.transportes?.[0]?.tipoTransporte ?? "",
-                papel: solicitacao.papel
+                papel: solicitacao.papel,
+                status: solicitacao.status
             };
         });
     }

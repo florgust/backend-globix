@@ -23,6 +23,7 @@ export interface SolicitacaoViagemCard {
     organizador: string;
     transporte: string;
     papel: string;
+    status: number;
 }
 
 // Definição do modelo 'Solicitacao'
