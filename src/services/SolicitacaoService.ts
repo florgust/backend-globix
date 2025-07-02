@@ -124,7 +124,7 @@ export class SolicitacaoService {
         return solicitacaoSolicitante;
     }
     // Atualizar o status de uma solicitação
-    static async atualizarStatusSolicitacao(idViagem: number, idUsuario: number) {
+    static async atualizarInseridoSolicitacao(idViagem: number, idUsuario: number) {
         const solicitacao = await Solicitacao.findOne({ where: { idViagem, idUsuario } });
 
         if (!solicitacao) {
@@ -132,7 +132,7 @@ export class SolicitacaoService {
         }
 
         // Inverte o status: se for 1 vira 0, se for 0 vira 1
-        solicitacao.status = solicitacao.status === 1 ? 0 : 1;
+        solicitacao.inseridoNaViagem = solicitacao.inseridoNaViagem === 1 ? 0 : 1;
         solicitacao.dataAtualizacao = new Date(); // Atualiza a data de modificação
         await solicitacao.save();
 
@@ -192,5 +192,17 @@ export class SolicitacaoService {
         );
 
         return { message: `${solicitacoes.length} solicitações foram inativadas para a viagem ${idViagem}` };
+    }
+
+    static async excluirSolicitacao(idViagem: number, idUsuario: number) {
+        const solicitacao = await Solicitacao.findOne({ where: { idViagem, idUsuario } });
+
+        if (!solicitacao) {
+            throw new NotFoundError("Solicitação não encontrada.");
+        }
+
+        await solicitacao.destroy();
+
+        return { message: "Solicitação excluída com sucesso." };
     }
 }

@@ -50,14 +50,20 @@ export const encerrarViagem = asyncHandler(async (req: Request, res: Response): 
 });
 
 // Atualizar o status de uma solicitação
-export const atualizarStatusSolicitacao = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+export const atualizarInseridoSolicitacao = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { idViagem, idUsuario } = req.params;
 
-    const solicitacaoAtualizada = await SolicitacaoService.atualizarStatusSolicitacao(Number(idViagem), Number(idUsuario));
+    const solicitacaoAtualizada = await SolicitacaoService.atualizarInseridoSolicitacao(Number(idViagem), Number(idUsuario));
 
     if (!solicitacaoAtualizada) {
         res.status(404).json({ error: 'Solicitação não encontrada' });
     } else {
         res.status(200).json(solicitacaoAtualizada);
     }
+});
+
+export const excluirSolicitacao = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const { idViagem, idUsuario } = req.params;
+    const resultado = await SolicitacaoService.excluirSolicitacao(Number(idViagem), Number(idUsuario));
+    res.status(200).json(resultado);
 });
