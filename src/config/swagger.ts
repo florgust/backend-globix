@@ -10,7 +10,7 @@ const options = {
     },
     servers: [
       {
-        url: 'https://api.globx.app.br'.
+        url: 'https://api.globx.app.br',
       },
     ],
   },
