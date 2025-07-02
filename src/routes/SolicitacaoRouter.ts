@@ -5,8 +5,10 @@ import {
     getSolicitacoesViagemToCard,
     criarSolicitacao,
     criarSolicitacaoCriadorViagem,
-    atualizarStatusSolicitacao,
-    promoverOuDespromoverOrganizadorSolicitacao
+    atualizarInseridoSolicitacao,
+    promoverOuDespromoverOrganizadorSolicitacao,
+    encerrarViagem,
+    excluirSolicitacao
 } from '@controllers/api/solicitacao/SolicitacaoController';
 
 const router = express.Router();
@@ -18,6 +20,8 @@ router.get('/solicitacoes/viagem/card/:idUsuario', getSolicitacoesViagemToCard);
 router.post('/solicitacao/:idUsuario/:idViagem', criarSolicitacao); // Criar uma nova solicitação de viagem
 router.post('/solicitacao/criador/:idUsuario/:idViagem', criarSolicitacaoCriadorViagem); // Criar uma solicitação como criador da viagem
 router.post('/solicitacao/promocao/:idViagem/:idUsuarioOrganizador', promoverOuDespromoverOrganizadorSolicitacao); // Promover ou despromover um organizador de viagem
-router.put('/solicitacao/:idViagem/:idUsuario/status', atualizarStatusSolicitacao); // Atualizar o status de uma solicitação
+router.put('/solicitacao/:idViagem/:idUsuario/inserido', atualizarInseridoSolicitacao); // Atualizar o status de uma solicitação
+router.put('/solicitacao/encerrar/:idViagem', encerrarViagem); // Encerrar viagem - inativar todas as solicitações
+router.delete('/solicitacao/:idViagem/:idUsuario', excluirSolicitacao); // Excluir uma solicitação
 
 export default router;

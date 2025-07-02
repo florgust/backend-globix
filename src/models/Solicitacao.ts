@@ -9,6 +9,7 @@ export interface SolicitacaoAttributes {
     idUsuario: number;
     papel: 'organizador' | 'participante' | 'organizadorPromovido';
     status: number;
+    inseridoNaViagem: number;
     dataCriacao: Date;
     dataAtualizacao: Date;
 }
@@ -18,9 +19,11 @@ export interface SolicitacaoViagemCard {
     imagem: string;
     dataInicio: string;
     dataFim: string;
+    codigoConvite: number;
     organizador: string;
     transporte: string;
     papel: string;
+    status: number;
 }
 
 // Definição do modelo 'Solicitacao'
@@ -29,6 +32,7 @@ class Solicitacao extends Model<SolicitacaoAttributes> implements SolicitacaoAtt
     public idUsuario!: number;
     public papel!: 'organizador' | 'participante' | 'organizadorPromovido';
     public status!: number;
+    public inseridoNaViagem!: number;
     public dataCriacao!: Date;
     public dataAtualizacao!: Date;
 }
@@ -63,6 +67,11 @@ Solicitacao.init(
             defaultValue: 'participante',
         },
         status: {
+            type: DataTypes.SMALLINT,
+            allowNull: false,
+            defaultValue: 1, // 1 = Ativo, 0 = Inativo
+        }, 
+        inseridoNaViagem: {
             type: DataTypes.SMALLINT,
             allowNull: false,
             defaultValue: 1, // 1 = Ativo, 0 = Inativo

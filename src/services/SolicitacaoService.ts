@@ -20,7 +20,7 @@ export class SolicitacaoService {
     static async getSolicitacoesViagemToCard(idUsuario: number) {
         // Busca todas as solicitações do usuário
         const solicitacoes = await Solicitacao.findAll({
-            where: { idUsuario, status: 1 },
+            where: { idUsuario, inseridoNaViagem: 1 },
             include: [
                 {
                     model: Viagem,
@@ -44,15 +44,18 @@ export class SolicitacaoService {
         // Monta o retorno no formato desejado
         return solicitacoes.map((solicitacao: any) => {
             const viagem = solicitacao.viagem;
+            console.log(viagem);
             return {
                 id: viagem.id,
                 nome: viagem.nome,
                 imagem: "/images-my_trips/rifaina.png",
                 dataInicio: viagem.dataInicio,
                 dataFim: viagem.dataFim,
+                codigoConvite: viagem.codigoConvite,
                 organizador: viagem.criador?.nome ?? "",
                 transporte: viagem.transportes?.[0]?.tipoTransporte ?? "",
-                papel: solicitacao.papel
+                papel: solicitacao.papel,
+                status: solicitacao.status
             };
         });
     }
@@ -73,7 +76,8 @@ export class SolicitacaoService {
             idViagem: idViagem,
             idUsuario: idUsuario,
             papel: "participante",
-            status: 0,
+            status: 1,
+            inseridoNaViagem: 0,
             dataCriacao: new Date(),
             dataAtualizacao: new Date(),
         });
@@ -95,6 +99,7 @@ export class SolicitacaoService {
             idUsuario: idUsuario,
             papel: "organizador",
             status: 1,
+            inseridoNaViagem: 1,
             dataCriacao: new Date(),
             dataAtualizacao: new Date(),
         });
@@ -120,7 +125,7 @@ export class SolicitacaoService {
         return solicitacaoSolicitante;
     }
     // Atualizar o status de uma solicitação
-    static async atualizarStatusSolicitacao(idViagem: number, idUsuario: number) {
+    static async atualizarInseridoSolicitacao(idViagem: number, idUsuario: number) {
         const solicitacao = await Solicitacao.findOne({ where: { idViagem, idUsuario } });
 
         if (!solicitacao) {
@@ -128,7 +133,7 @@ export class SolicitacaoService {
         }
 
         // Inverte o status: se for 1 vira 0, se for 0 vira 1
-        solicitacao.status = solicitacao.status === 1 ? 0 : 1;
+        solicitacao.inseridoNaViagem = solicitacao.inseridoNaViagem === 1 ? 0 : 1;
         solicitacao.dataAtualizacao = new Date(); // Atualiza a data de modificação
         await solicitacao.save();
 
@@ -169,5 +174,36 @@ export class SolicitacaoService {
         if (conflitos.length > 0) {
             throw new BadRequestError("O usuário já possui uma solicitação ou participação em uma viagem com conflito de datas.");
         }
+    }
+
+    static async encerrarViagem(idViagem: number) {
+        const solicitacoes = await Solicitacao.findAll({ where: { idViagem } });
+
+        if (solicitacoes.length === 0) {
+            throw new NotFoundError("Nenhuma solicitação encontrada para esta viagem.");
+        }
+
+        // Atualiza todas as solicitações da viagem para status = 0
+        await Solicitacao.update(
+            {
+                status: 0,
+                dataAtualizacao: new Date()
+            },
+            { where: { idViagem } }
+        );
+
+        return { message: `${solicitacoes.length} solicitações foram inativadas para a viagem ${idViagem}` };
+    }
+
+    static async excluirSolicitacao(idViagem: number, idUsuario: number) {
+        const solicitacao = await Solicitacao.findOne({ where: { idViagem, idUsuario } });
+
+        if (!solicitacao) {
+            throw new NotFoundError("Solicitação não encontrada.");
+        }
+
+        await solicitacao.destroy();
+
+        return { message: "Solicitação excluída com sucesso." };
     }
 }
