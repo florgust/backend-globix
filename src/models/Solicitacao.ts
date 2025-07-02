@@ -18,6 +18,7 @@ export interface SolicitacaoViagemCard {
     imagem: string;
     dataInicio: string;
     dataFim: string;
+    codigoConvite: number;
     organizador: string;
     transporte: string;
     papel: string;

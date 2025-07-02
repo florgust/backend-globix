@@ -44,12 +44,14 @@ export class SolicitacaoService {
         // Monta o retorno no formato desejado
         return solicitacoes.map((solicitacao: any) => {
             const viagem = solicitacao.viagem;
+            console.log(viagem);
             return {
                 id: viagem.id,
                 nome: viagem.nome,
                 imagem: "/images-my_trips/rifaina.png",
                 dataInicio: viagem.dataInicio,
                 dataFim: viagem.dataFim,
+                codigoConvite: viagem.codigoConvite,
                 organizador: viagem.criador?.nome ?? "",
                 transporte: viagem.transportes?.[0]?.tipoTransporte ?? "",
                 papel: solicitacao.papel
