@@ -162,6 +162,16 @@ export class SolicitacaoService {
         solicitacao.dataAtualizacao = new Date(); // Atualiza a data de modificação
         await solicitacao.save();
 
+        if (solicitacao.inseridoNaViagem === 1) {
+            const viagem = await Viagem.findByPk(idViagem);
+            await criarNotificacao({
+                userId: idUsuario,
+                viagemId: idViagem,
+                tipo: "solicitacao_aceita",
+                mensagem: `Você foi aceito na viagem ${viagem?.nome ?? idViagem}`,
+            });
+        }
+
         return solicitacao;
     }
 
