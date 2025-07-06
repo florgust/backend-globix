@@ -21,3 +21,11 @@ export const markReadNotificacoes = asyncHandler(
         res.status(204).send();
     }
 );
+
+export const getLastThreeNotificacoes = asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+        const userId = Number(req.params.userId);
+        const notifs = await NotificacaoService.getLastThreeByUser(userId);
+        res.status(200).json(notifs);
+    }
+);
