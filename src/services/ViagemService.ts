@@ -94,7 +94,7 @@ export class ViagemService {
             );
 
             // 4) Disparar notificação para cada
-            const msg = `A viagem foi atualizada - Campos atualizados: ${changedFields.join(", ")}`;
+            const msg = `A viagem foi atualizada`;
             await Promise.all(
                 userIds.map((userId) =>
                     criarNotificacao({
