@@ -64,6 +64,7 @@ export class SolicitacaoService {
     }
 
     static async criarSolicitacao(idViagem: number, idUsuario: number) {
+        console.log("CRIANDO SOLICITACAO")
         // Buscar a viagem que está sendo solicitada
         const viagemSolicitada = await Viagem.findByPk(idViagem);
 
@@ -90,6 +91,7 @@ export class SolicitacaoService {
             throw new Error("Viagem não tem organizador vinculado.");
         }
 
+        console.log(`Organizador da viagem - id: ${organizadorId}`);
         const solicitante = await Usuario.findByPk(idUsuario);
         if (!solicitante) {
             throw new NotFoundError("Usuário solicitante não encontrado.");
