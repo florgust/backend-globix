@@ -52,6 +52,8 @@ export class SolicitacaoService {
                 dataInicio: viagem.dataInicio,
                 dataFim: viagem.dataFim,
                 codigoConvite: viagem.codigoConvite,
+                cidadeOrigem: viagem.cidadeOrigem,
+                cidadeDestino: viagem.cidadeDestino,
                 organizador: viagem.criador?.nome ?? "",
                 transporte: viagem.transportes?.[0]?.tipoTransporte ?? "",
                 papel: solicitacao.papel,
