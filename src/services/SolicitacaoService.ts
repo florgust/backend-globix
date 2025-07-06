@@ -102,7 +102,7 @@ export class SolicitacaoService {
             userId: organizadorId,
             viagemId: idViagem,
             tipo: "solicitacao_participacao",
-            mensagem: `O usuário ${solicitante.nome} solicitou participar da viagem`,
+            mensagem: `O usuário ${solicitante.nome} solicitou participar da viagem ${viagemSolicitada.nome}`,
         });
 
         return solicitacao;

@@ -16,4 +16,13 @@ export class NotificacaoService {
             { where: { id: ids } }
         );
     }
+
+    // 3️⃣ Buscar as 3 últimas notificações (lidas ou não)
+    static async getLastThreeByUser(userId: number) {
+        return await Notificacao.findAll({
+            where: { userId },
+            order: [['dataCriacao', 'DESC']],
+            limit: 3,
+        });
+    }
 }

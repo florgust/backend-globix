@@ -94,7 +94,7 @@ export class ViagemService {
             );
 
             // 4) Disparar notificação para cada
-            const msg = `A viagem foi atualizada`;
+            const msg = `A viagem ${viagem.nome} foi atualizada`;
             await Promise.all(
                 userIds.map((userId) =>
                     criarNotificacao({
