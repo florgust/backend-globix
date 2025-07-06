@@ -2,6 +2,7 @@ import Solicitacao from '@models/Solicitacao';
 import Viagem from '@models/Viagem';
 import { Op } from 'sequelize';
 import { NotFoundError, BadRequestError } from '@utils/Errors';
+import { criarNotificacao } from '@utils/notificacaoUtils';
 import Usuario from '@models/Usuario';
 import Transporte from '@models/Transporte';
 
@@ -74,7 +75,7 @@ export class SolicitacaoService {
         await this.validarConflitoSolicitacao(idUsuario, viagemSolicitada);
 
         // Criar a nova solicitação
-        return await Solicitacao.create({
+        const solicitacao = await Solicitacao.create({
             idViagem: idViagem,
             idUsuario: idUsuario,
             papel: "participante",
@@ -83,6 +84,26 @@ export class SolicitacaoService {
             dataCriacao: new Date(),
             dataAtualizacao: new Date(),
         });
+
+        const organizadorId = viagemSolicitada.criadorId;
+        if (!organizadorId) {
+            throw new Error("Viagem não tem organizador vinculado.");
+        }
+
+        const solicitante = await Usuario.findByPk(idUsuario);
+        if (!solicitante) {
+            throw new NotFoundError("Usuário solicitante não encontrado.");
+        }
+
+        // Chama a função utilitária 🚀
+        await criarNotificacao({
+            userId: organizadorId,
+            viagemId: idViagem,
+            tipo: "solicitacao_participacao",
+            mensagem: `O usuário ${solicitante.nome} solicitou participar da viagem`,
+        });
+
+        return solicitacao;
     }
 
     static async criarSolicitacaoCriadorViagem(idViagem: number, idUsuario: number) {

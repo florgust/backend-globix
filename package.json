@@ -6,8 +6,8 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "npm run clean && tsc",
-    "start": "node -r module-alias/register dist/app.js",
-    "dev": "ts-node-dev --respawn --transpile-only --require tsconfig-paths/register src/app.ts",
+    "start": "node -r module-alias/register dist/server.js",
+    "dev": "ts-node-dev --respawn --transpile-only --require tsconfig-paths/register src/server.ts",
     "heroku-postbuild": "npm run build"
   },
   "keywords": [],
@@ -25,6 +25,7 @@
     "pg": "^8.14.1",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.6",
+    "socket.io": "^4.8.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "tsconfig-paths": "^4.2.0",
