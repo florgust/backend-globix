@@ -9,6 +9,7 @@ import transporteRouter from '@routes/TransporteRouter';
 import itinerarioRouter from '@routes/ItinerarioRouter';
 import usuarioRouter from '@routes/UsuarioRouter';
 import orcamentoRouter from '@routes/OrcamentoRouter';
+import notificacaoRouter from '@routes/NotificacaoRouter';
 import login from '@routes/LoginRouter';
 
 import { errorDefaultHandler } from '@middlewares/ErrorHandler';
@@ -30,6 +31,7 @@ app.use('/', itinerarioRouter);
 app.use('/', usuarioRouter);
 app.use('/', solicitacoesRouter);
 app.use('/', orcamentoRouter);
+app.use('/', notificacaoRouter);
 app.use('/', login);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
