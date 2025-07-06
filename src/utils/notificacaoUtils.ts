@@ -14,7 +14,7 @@ export async function criarNotificacao({
   tipo,
   mensagem,
 }: CriarNotificacaoParams) {
-  // 1️⃣ Cria no banco
+
   const notificacao = await Notificacao.create({
     userId,
     viagemId,
@@ -24,7 +24,6 @@ export async function criarNotificacao({
     dataCriacao: new Date(),
   });
 
-  // 2️⃣ Emite via Socket.IO na sala do usuário
   io.to(String(userId)).emit("nova-notificacao", {
     id: notificacao.id,
     mensagem: notificacao.mensagem,
