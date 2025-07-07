@@ -36,7 +36,7 @@ class FotoService {
             await this.deleteFoto(fotoExistente.id!);
         }
 
-        const result = await this.uploadToCloudinary(file, `/globix/usuarios/${usuarioId}/perfil`);
+        const result = await this.uploadToCloudinary(file, `globix/usuarios/${usuarioId}`);
 
         const foto = await FotoService.createFoto({
             url: result.secure_url,
@@ -60,7 +60,7 @@ class FotoService {
             await this.deleteFoto(fotoExistente.id!);
         }
 
-        const result = await this.uploadToCloudinary(file, `/globix/viagens/${viagemId}/capa`);
+        const result = await this.uploadToCloudinary(file, `globix/viagens/${viagemId}`);
 
         const foto = await FotoService.createFoto({
             url: result.secure_url,
@@ -129,9 +129,9 @@ class FotoService {
 
             let folder = "";
             if (foto.tipo === "perfil") {
-                folder = `usuarios/${foto.usuarioId}/perfil`;
+                folder = `globix/usuarios/${foto.usuarioId}`;
             } else if (foto.tipo === "capa_viagem") {
-                folder = `viagens/${foto.viagemId}/capa`;
+                folder = `globix/viagens/${foto.viagemId}`;
             }
 
             const result = await this.uploadToCloudinary(file, folder);

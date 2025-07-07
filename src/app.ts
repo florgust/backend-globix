@@ -12,7 +12,7 @@ import orcamentoRouter from '@routes/OrcamentoRouter';
 import notificacaoRouter from '@routes/NotificacaoRouter';
 import fotoRouter from '@routes/FotoRouter';
 import login from '@routes/LoginRouter';
-
+import setupAssociations from '@config/association';
 import { errorDefaultHandler } from '@middlewares/ErrorHandler';
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('@config/swagger');
@@ -20,6 +20,8 @@ const swaggerSpec = require('@config/swagger');
 const cors = require('cors');
 
 dotenv.config();
+
+setupAssociations();
 
 const app = express();
 app.use(express.json());

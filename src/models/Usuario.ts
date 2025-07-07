@@ -11,7 +11,6 @@ export interface UsuarioAttributes {
     status: number;
     dataCriacao: Date;
     dataAtualizacao: Date;
-    url?: string;
 }
 
 // Definindo o modelo `Usuario`
@@ -24,7 +23,16 @@ class Usuario extends Model<UsuarioAttributes> implements UsuarioAttributes {
     public status!: number;
     public dataCriacao!: Date;
     public dataAtualizacao!: Date;
-    public url!: string;
+    public fotoPerfil?: any;
+
+
+    static associate(models: any) {
+        Usuario.hasOne(models.Foto, {
+            foreignKey: 'usuarioId',
+            as: 'fotoPerfil',
+            scope: { tipo: 'perfil' }
+        });
+    }
 }
 
 Usuario.init(
@@ -67,12 +75,8 @@ Usuario.init(
             allowNull: false,
             defaultValue: DataTypes.NOW,  // Define o valor padrão como a data e hora atuais
         },
-        url: {
-            type: DataTypes.DATE,
-            allowNull: true,
-            defaultValue: null, // Permite que o campo seja nulo inicialmente   
-        },
     },
+    
     {
         sequelize, // A instância do Sequelize para a conexão
         tableName: 'usuarios',
@@ -80,6 +84,7 @@ Usuario.init(
         //underscored: true, // Para usar o snake_case
         timestamps: false, // Desativar os timestamps automáticos do Sequelize
     }
+
 );
 
 export default Usuario;

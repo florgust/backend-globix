@@ -23,6 +23,23 @@ class Foto extends Model<FotoAttributes> implements FotoAttributes {
     public viagemId!: number;
     public dataCriacao!: Date;
     public dataAtualizacao!: Date;
+
+    public usuario?: any;
+    public viagem?: any;
+
+    static associate(models: any) {
+        // Uma foto pertence a um usuário
+        Foto.belongsTo(models.Usuario, {
+            foreignKey: 'usuarioId',
+            as: 'usuario'
+        });
+        
+        // Uma foto pertence a uma viagem
+        Foto.belongsTo(models.Viagem, {
+            foreignKey: 'viagemId',
+            as: 'viagem'
+        });
+    }
 }
 
 Foto.init(

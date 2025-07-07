@@ -18,7 +18,6 @@ export interface ViagemAttributes {
     quantidadeParticipante: number;
     cidadeOrigem: string;
     cidadeDestino: string;
-    url?: string;
 }
 
 //Definindo o modelo 'Viagem'
@@ -37,7 +36,17 @@ class Viagem extends Model<ViagemAttributes> implements ViagemAttributes {
     public quantidadeParticipante!: number;
     public cidadeOrigem!: string;
     public cidadeDestino!: string;
-    public url!: string;
+
+    public fotoCapa?: any;
+
+    static associate(models: any) {
+        // Uma viagem tem UMA foto de capa
+        Viagem.hasOne(models.Foto, {
+            foreignKey: 'viagemId',
+            as: 'fotoCapa',
+            scope: { tipo: 'capa_viagem' }
+        });
+    }
 }
 
 Viagem.init(
@@ -99,10 +108,6 @@ Viagem.init(
             type: new DataTypes.STRING(50),
             allowNull: false,
         },
-        url: {
-            type: new DataTypes.STRING(255),
-            allowNull: true,
-        }
     },
     {
         sequelize, // A instância do Sequelize para a conexão
