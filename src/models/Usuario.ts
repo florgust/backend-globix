@@ -11,6 +11,7 @@ export interface UsuarioAttributes {
     status: number;
     dataCriacao: Date;
     dataAtualizacao: Date;
+    url?: string;
 }
 
 // Definindo o modelo `Usuario`
@@ -23,6 +24,7 @@ class Usuario extends Model<UsuarioAttributes> implements UsuarioAttributes {
     public status!: number;
     public dataCriacao!: Date;
     public dataAtualizacao!: Date;
+    public url!: string;
 }
 
 Usuario.init(
@@ -64,6 +66,11 @@ Usuario.init(
             type: DataTypes.DATE,
             allowNull: false,
             defaultValue: DataTypes.NOW,  // Define o valor padrão como a data e hora atuais
+        },
+        url: {
+            type: DataTypes.DATE,
+            allowNull: true,
+            defaultValue: null, // Permite que o campo seja nulo inicialmente   
         },
     },
     {

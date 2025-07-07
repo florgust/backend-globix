@@ -13,5 +13,6 @@ export const usuarioSchema = z.object({
         .min(8, { message: 'O campo "senha" deve ter pelo menos 8 caracteres.' })
         .max(100, { message: 'O campo "senha" deve ter no máximo 100 caracteres.' }),
 
-    tipo: z.enum(["participante", "organizador"], { message: 'O campo "tipo" deve ser "admin" ou "usuario".' })
+    tipo: z.enum(["participante", "organizador"], { message: 'O campo "tipo" deve ser "admin" ou "usuario".' }),
+    url: z.string().optional()
 });
