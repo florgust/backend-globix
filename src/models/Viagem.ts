@@ -18,6 +18,7 @@ export interface ViagemAttributes {
     quantidadeParticipante: number;
     cidadeOrigem: string;
     cidadeDestino: string;
+    url?: string;
 }
 
 //Definindo o modelo 'Viagem'
@@ -36,6 +37,7 @@ class Viagem extends Model<ViagemAttributes> implements ViagemAttributes {
     public quantidadeParticipante!: number;
     public cidadeOrigem!: string;
     public cidadeDestino!: string;
+    public url!: string;
 }
 
 Viagem.init(
@@ -97,6 +99,10 @@ Viagem.init(
             type: new DataTypes.STRING(50),
             allowNull: false,
         },
+        url: {
+            type: new DataTypes.STRING(255),
+            allowNull: true,
+        }
     },
     {
         sequelize, // A instância do Sequelize para a conexão
