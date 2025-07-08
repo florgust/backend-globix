@@ -16,6 +16,8 @@ export interface ViagemAttributes {
     dataAtualizacao: Date;
     tipo: string;
     quantidadeParticipante: number;
+    cidadeOrigem: string;
+    cidadeDestino: string;
 }
 
 //Definindo o modelo 'Viagem'
@@ -32,6 +34,8 @@ class Viagem extends Model<ViagemAttributes> implements ViagemAttributes {
     public dataAtualizacao!: Date;
     public tipo!: string;
     public quantidadeParticipante!: number;
+    public cidadeOrigem!: string;
+    public cidadeDestino!: string;
 }
 
 Viagem.init(
@@ -83,6 +87,14 @@ Viagem.init(
         },
         dataAtualizacao: {
             type: new DataTypes.DATE,
+            allowNull: false,
+        },
+        cidadeOrigem: {
+            type: new DataTypes.STRING(50),
+            allowNull: false,
+        },
+        cidadeDestino: {
+            type: new DataTypes.STRING(50),
             allowNull: false,
         },
     },

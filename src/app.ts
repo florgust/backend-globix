@@ -2,15 +2,15 @@ import 'module-alias/register';
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 
+import solicitacoesRouter from '@routes/SolicitacaoRouter';
 import localizacaoRouter from '@routes/LocalizacaoRouter';
 import viagemRoutes from '@routes/ViagemRouter';
-import transporteRoutes from '@routes/TransporteRouter';
-import itinerarioRoutes from '@routes/ItinerarioRouter';
-import usuarioRoutes from '@routes/UsuarioRouter';
-import solicitacoesroutes from '@routes/SolicitacaoRouter';
-import orcamentoRoutes from '@routes/OrcamentoRouter';
+import transporteRouter from '@routes/TransporteRouter';
+import itinerarioRouter from '@routes/ItinerarioRouter';
+import usuarioRouter from '@routes/UsuarioRouter';
+import orcamentoRouter from '@routes/OrcamentoRouter';
+import notificacaoRouter from '@routes/NotificacaoRouter';
 import login from '@routes/LoginRouter';
-
 
 import { errorDefaultHandler } from '@middlewares/ErrorHandler';
 const swaggerUi = require('swagger-ui-express');
@@ -26,11 +26,12 @@ app.use(cors());
 
 app.use('/', viagemRoutes);
 app.use('/', localizacaoRouter);
-app.use('/', transporteRoutes);
-app.use('/', itinerarioRoutes);
-app.use('/', usuarioRoutes);
-app.use('/', solicitacoesroutes);
-app.use('/', orcamentoRoutes);
+app.use('/', transporteRouter);
+app.use('/', itinerarioRouter);
+app.use('/', usuarioRouter);
+app.use('/', solicitacoesRouter);
+app.use('/', orcamentoRouter);
+app.use('/', notificacaoRouter);
 app.use('/', login);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
@@ -41,9 +42,4 @@ app.get('/', (req: Request, res: Response) => {
     res.send('API está rodando!');
 });
 
-const PORT = process.env.PORT ?? 3000; //Porta padrão 3000
-app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
-});
-
-export default app
+export default app;

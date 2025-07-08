@@ -5,6 +5,8 @@ import Orcamento from '@models/Orcamento';
 import Transporte from '@models/Transporte';
 import Itinerario from '@models/Itinerario';
 import Localizacao from '@models/Localizacao';
+import { criarNotificacao } from '@utils/notificacaoUtils';
+import Solicitacao from '@models/Solicitacao';
 
 export class ViagemService {
     // Buscar todas as viagens
@@ -75,11 +77,37 @@ export class ViagemService {
             throw new NotFoundError('Viagem não encontrada.');
         }
 
-        // Atualizar os campos fornecidos
-        return await viagem.update({
+        const updated = await viagem.update({
             ...data,
-            dataAtualizacao: new Date(), // Atualiza a data de modificação
+            dataAtualizacao: new Date(),
         });
+
+        // 2) Preparar notificação
+        const changedFields = Object.keys(data);
+        if (changedFields.length > 0) {
+            // 3) Pegar todos os participantes/organizadores
+            const solicitacoes = await Solicitacao.findAll({
+                where: { idViagem: id, inseridoNaViagem: 1 },
+            });
+            const userIds = Array.from(
+                new Set(solicitacoes.map((s) => s.idUsuario))
+            );
+
+            // 4) Disparar notificação para cada
+            const msg = `A viagem ${viagem.nome} foi atualizada`;
+            await Promise.all(
+                userIds.map((userId) =>
+                    criarNotificacao({
+                        userId,
+                        viagemId: id,
+                        tipo: "viagem_atualizada",
+                        mensagem: msg,
+                    })
+                )
+            );
+        }
+
+        return updated;
     }
 
     // Deletar viagem

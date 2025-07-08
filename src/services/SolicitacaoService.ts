@@ -2,6 +2,7 @@ import Solicitacao from '@models/Solicitacao';
 import Viagem from '@models/Viagem';
 import { Op } from 'sequelize';
 import { NotFoundError, BadRequestError } from '@utils/Errors';
+import { criarNotificacao } from '@utils/notificacaoUtils';
 import Usuario from '@models/Usuario';
 import Transporte from '@models/Transporte';
 
@@ -52,7 +53,10 @@ export class SolicitacaoService {
                 dataInicio: viagem.dataInicio,
                 dataFim: viagem.dataFim,
                 codigoConvite: viagem.codigoConvite,
+                cidadeOrigem: viagem.cidadeOrigem,
+                cidadeDestino: viagem.cidadeDestino,
                 organizador: viagem.criador?.nome ?? "",
+                criadorId: viagem.criadorId,
                 transporte: viagem.transportes?.[0]?.tipoTransporte ?? "",
                 papel: solicitacao.papel,
                 status: solicitacao.status
@@ -61,6 +65,7 @@ export class SolicitacaoService {
     }
 
     static async criarSolicitacao(idViagem: number, idUsuario: number) {
+        console.log("CRIANDO SOLICITACAO")
         // Buscar a viagem que está sendo solicitada
         const viagemSolicitada = await Viagem.findByPk(idViagem);
 
@@ -72,7 +77,7 @@ export class SolicitacaoService {
         await this.validarConflitoSolicitacao(idUsuario, viagemSolicitada);
 
         // Criar a nova solicitação
-        return await Solicitacao.create({
+        const solicitacao = await Solicitacao.create({
             idViagem: idViagem,
             idUsuario: idUsuario,
             papel: "participante",
@@ -81,6 +86,27 @@ export class SolicitacaoService {
             dataCriacao: new Date(),
             dataAtualizacao: new Date(),
         });
+
+        const organizadorId = viagemSolicitada.criadorId;
+        if (!organizadorId) {
+            throw new Error("Viagem não tem organizador vinculado.");
+        }
+
+        console.log(`Organizador da viagem - id: ${organizadorId}`);
+        const solicitante = await Usuario.findByPk(idUsuario);
+        if (!solicitante) {
+            throw new NotFoundError("Usuário solicitante não encontrado.");
+        }
+
+        // Chama a função utilitária 🚀
+        await criarNotificacao({
+            userId: organizadorId,
+            viagemId: idViagem,
+            tipo: "solicitacao_participacao",
+            mensagem: `O usuário ${solicitante.nome} solicitou participar da viagem ${viagemSolicitada.nome}`,
+        });
+
+        return solicitacao;
     }
 
     static async criarSolicitacaoCriadorViagem(idViagem: number, idUsuario: number) {
@@ -136,6 +162,16 @@ export class SolicitacaoService {
         solicitacao.inseridoNaViagem = solicitacao.inseridoNaViagem === 1 ? 0 : 1;
         solicitacao.dataAtualizacao = new Date(); // Atualiza a data de modificação
         await solicitacao.save();
+
+        if (solicitacao.inseridoNaViagem === 1) {
+            const viagem = await Viagem.findByPk(idViagem);
+            await criarNotificacao({
+                userId: idUsuario,
+                viagemId: idViagem,
+                tipo: "solicitacao_aceita",
+                mensagem: `Você foi aceito na viagem ${viagem?.nome ?? idViagem}`,
+            });
+        }
 
         return solicitacao;
     }

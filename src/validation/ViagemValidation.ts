@@ -8,4 +8,6 @@ export const createViagemSchema = z.object({
     criadorId: z.number().int().positive('O ID do criador deve ser um número inteiro positivo'),
     tipo: z.string().max(50, 'O tipo deve ter no máximo 50 caracteres'),
     quantidadeParticipante: z.number().int().positive('A quantidade de participantes deve ser um número inteiro positivo'),
+    cidadeOrigem: z.string().max(250, 'O tipo deve ter no máximo 250 caracteres'),
+    cidadeDestino: z.string().max(250, 'O tipo deve ter no máximo 250 caracteres'),
 });
