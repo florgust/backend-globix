@@ -8,7 +8,8 @@ import {
     atualizarInseridoSolicitacao,
     promoverOuDespromoverOrganizadorSolicitacao,
     encerrarViagem,
-    excluirSolicitacao
+    excluirSolicitacao,
+    getSolicitacoesViagemToCardCommunity
 } from '@controllers/api/solicitacao/SolicitacaoController';
 
 const router = express.Router();
@@ -23,5 +24,7 @@ router.post('/solicitacao/promocao/:idViagem/:idUsuarioOrganizador', promoverOuD
 router.put('/solicitacao/:idViagem/:idUsuario/inserido', atualizarInseridoSolicitacao); // Atualizar o status de uma solicitação
 router.put('/solicitacao/encerrar/:idViagem', encerrarViagem); // Encerrar viagem - inativar todas as solicitações
 router.delete('/solicitacao/:idViagem/:idUsuario', excluirSolicitacao); // Excluir uma solicitação
+router.get("/solicitacoes/community/:idUsuario", getSolicitacoesViagemToCardCommunity);
+
 
 export default router;

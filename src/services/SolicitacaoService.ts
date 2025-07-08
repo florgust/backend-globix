@@ -68,36 +68,34 @@ export class SolicitacaoService {
     }
 
     static async getSolicitacoesViagemToCardCommunity(idUsuario: number) {
-    // Busca todas as solicitações do usuário
-    const solicitacoes = await Solicitacao.findAll({
-        where: { idUsuario, inseridoNaViagem: 1 },
-        include: [
-            {
-                model: Viagem,
-                as: 'viagem',
-                include: [
-                    {
-                        model: Usuario,
-                        as: 'criador',
-                        attributes: ['id', 'nome']
-                    },
-                    {
-                        model: Transporte,
-                        as: 'transportes',
-                        attributes: ['tipoTransporte']
-                    }
-                ]
-            }
-        ]
-    });
+        // Busca todas as solicitações do usuário
+        const solicitacoes = await Solicitacao.findAll({
+            where: { idUsuario, inseridoNaViagem: 1 },
+            include: [
+                {
+                    model: Viagem,
+                    as: 'viagem',
+                    include: [
+                        {
+                            model: Usuario,
+                            as: 'criador', // ajuste conforme associação
+                            attributes: ['id','nome']
+                        },
+                        {
+                            model: Transporte,
+                            as: 'transportes', // ajuste conforme associação
+                            attributes: ['tipoTransporte']
+                        }
+                    ]
+                }
+            ]
+        });
 
-    // Monta o retorno no formato desejado
-    return await Promise.all(solicitacoes.map(async (solicitacao: any) => {
+        // Monta o retorno no formato desejado
+        return await Promise.all(solicitacoes.map(async (solicitacao: any) => {
         const viagem = solicitacao.viagem;
         const fotoCapa = await FotoService.getFotoCapa(viagem.id);
         const imagemViagem = fotoCapa?.url || null;
-
-        // Buscar a foto do organizador (criador)
         let fotoPerfilOrganizador = null;
         if (viagem.criador?.id) {
             const fotoPerfil = await FotoService.getFotoPerfil(viagem.criador.id);
@@ -114,6 +112,7 @@ export class SolicitacaoService {
             cidadeOrigem: viagem.cidadeOrigem,
             cidadeDestino: viagem.cidadeDestino,
             organizador: {
+                id: viagem.criador?.id ?? null,
                 nome: viagem.criador?.nome ?? "",
                 foto: fotoPerfilOrganizador // foto do organizador
             },
@@ -122,7 +121,7 @@ export class SolicitacaoService {
             status: solicitacao.status
         };
     }));
-}
+    }
 
     static async criarSolicitacao(idViagem: number, idUsuario: number) {
         console.log("CRIANDO SOLICITACAO")

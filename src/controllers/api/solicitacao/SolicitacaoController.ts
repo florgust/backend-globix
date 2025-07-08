@@ -27,6 +27,16 @@ export const getSolicitacoesViagemToCard = asyncHandler(async (req: Request, res
     res.status(200).json(solicitacoes);
 });
 
+export const getSolicitacoesViagemToCardCommunity = asyncHandler (async (req: Request, res: Response): Promise<void> => {
+    const { idUsuario } = req.params;
+    try {
+        const viagens = await SolicitacaoService.getSolicitacoesViagemToCardCommunity(Number(idUsuario));
+        res.status(200).json(viagens);
+    } catch (error) {
+        res.status(500).json({ error: "Erro ao buscar viagens da comunidade." });
+    }
+});
+
 // Criar uma nova solicitação
 export const criarSolicitacao = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { idViagem, idUsuario } = req.params;
