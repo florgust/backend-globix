@@ -60,6 +60,7 @@ export class SolicitacaoService {
             cidadeOrigem: viagem.cidadeOrigem,
             cidadeDestino: viagem.cidadeDestino,
             organizador: viagem.criador?.nome ?? "",
+                criadorId: viagem.criadorId,
             transporte: viagem.transportes?.[0]?.tipoTransporte ?? "",
             papel: solicitacao.papel,
             status: solicitacao.status
