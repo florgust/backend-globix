@@ -21,8 +21,10 @@ export const uploadFotoPerfil = asyncHandler(async (req: Request, res: Response)
 
 // Upload foto de capa da viagem
 export const uploadFotoCapa = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const { viagemId } = req.params;
     
+    const { viagemId } = req.params;
+    console.log("FOTO CAPA recebido:", req.file);
+
     if (!req.file) {
         res.status(400).json({ error: 'Arquivo de imagem não enviado.' });
         return;
