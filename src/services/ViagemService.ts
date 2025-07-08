@@ -105,7 +105,7 @@ export class ViagemService {
     static async createViagem(data: Omit<ViagemAttributes, 'id' | 'codigoConvite' | 'status' | 'dataCriacao' | 'dataAtualizacao'>): Promise<ViagemAttributes> {
         // Criar a viagem no banco de dados com dataCriacao e dataAtualizacao
         const codigoConvite = await this.createCodigoConvite(); // Chama o método de instância
-
+        
         return await Viagem.create({
             ...data,
             codigoConvite: codigoConvite, // Configura o código de convite
