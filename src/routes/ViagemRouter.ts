@@ -5,7 +5,10 @@ import {
     getViagemByCodigoConvite,
     createViagem,
     updateViagem,
-    deleteViagem
+    deleteViagem,
+    getViagensComFoto,
+    getViagemComFotoById,
+    getViagemComFotoByCodigoConvite
 } from '@controllers/ViagemController';
 
 const router = express.Router();
@@ -16,5 +19,11 @@ router.get('/viagem/codigo/:codigoConvite', getViagemByCodigoConvite);
 router.post('/viagem', createViagem);
 router.put('/viagem/:id', updateViagem);
 router.delete('/viagem/:id', deleteViagem);
+
+// NOVAS ROTAS para buscar com foto
+router.get('/viagens/fotos', getViagensComFoto);
+router.get('/viagens/:id/foto', getViagemComFotoById);
+router.get('/viagens/codigo/:codigoConvite/foto', getViagemComFotoByCodigoConvite);
+
 
 export default router;

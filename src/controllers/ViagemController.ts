@@ -14,6 +14,16 @@ export const getViagens = asyncHandler(async (req: Request, res: Response): Prom
     res.status(200).send(viagens);
 });
 
+//NOVO: Buscar todas as viagens com foto de capa
+export const getViagensComFoto = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    console.log('GET /viagens/fotos - Iniciando busca de todas as viagens com fotos');
+
+    const viagens = await ViagemService.getViagensComFoto();
+
+    console.log('GET /viagens/fotos - Viagens encontradas:', viagens.length);
+    res.status(200).json(viagens);
+});
+
 // Buscar viagem por ID
 export const getViagemById = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const id = parseInt(req.params.id);
@@ -25,6 +35,17 @@ export const getViagemById = asyncHandler(async (req: Request, res: Response): P
     res.status(200).send(viagem);
 });
 
+//NOVO: Buscar viagem por ID com foto de capa
+export const getViagemComFotoById = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const id = parseInt(req.params.id);
+    console.log(`GET /viagens/${id}/foto - Iniciando busca da viagem com foto com ID ${id}`);
+
+    const viagem = await ViagemService.getViagemComFotoById(id);
+
+    console.log(`GET /viagens/${id}/foto - Viagem encontrada:`, viagem);
+    res.status(200).json(viagem);
+});
+
 // Buscar viagem por código de convite
 export const getViagemByCodigoConvite = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const codigoConvite = parseInt(req.params.codigoConvite);
@@ -34,6 +55,16 @@ export const getViagemByCodigoConvite = asyncHandler(async (req: Request, res: R
 
     console.log(`GET /viagens/codigo/${codigoConvite} - Viagem encontrada:`, viagem);
     res.status(200).send(viagem);
+});
+
+export const getViagemComFotoByCodigoConvite = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const codigoConvite = parseInt(req.params.codigoConvite);
+    console.log(`GET /viagens/codigo/${codigoConvite}/foto - Iniciando busca da viagem com foto com código ${codigoConvite}`);
+
+    const viagem = await ViagemService.getViagemComFotoByCodigoConvite(codigoConvite);
+
+    console.log(`GET /viagens/codigo/${codigoConvite}/foto - Viagem encontrada:`, viagem);
+    res.status(200).json(viagem);
 });
 
 // Criar uma nova viagem

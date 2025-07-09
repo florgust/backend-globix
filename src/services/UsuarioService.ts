@@ -1,6 +1,7 @@
 import Usuario, { UsuarioAttributes } from '@models/Usuario';
 import { PasswordUtils } from '@utils/PasswordUtils';
 import { NotFoundError, BadRequestError, UnauthorizedError } from '@utils/Errors';
+import Foto from '@models/Foto';
 
 export class UsuarioService {
     // Buscar todos os usuários ativos (status = 1)
@@ -12,6 +13,26 @@ export class UsuarioService {
         });
     }
 
+    static async getUsuariosComFoto(): Promise<any[]> {
+        const usuarios = await Usuario.findAll({
+            where: {
+                status: 1,
+            },
+            include: [{
+                model: Foto,
+                as: 'fotoPerfil',
+                attributes: ['id', 'url'],
+                required: false // LEFT JOIN - usuário pode não ter foto
+            }]
+        });
+
+        // Formatar resposta incluindo URL da foto
+        return usuarios.map(usuario => ({
+            ...usuario.toJSON(),
+            url: usuario.fotoPerfil?.url || null
+        }));
+    }
+
     // Buscar usuário por ID
     static async getUsuarioById(id: number): Promise<UsuarioAttributes> {
         const usuario = await Usuario.findByPk(id);
@@ -19,6 +40,26 @@ export class UsuarioService {
             throw new NotFoundError('Usuário não encontrado.');
         }
         return usuario;
+    }
+
+    static async getUsuarioComFotoById(id: number): Promise<any> {
+        const usuario = await Usuario.findByPk(id, {
+            include: [{
+                model: Foto,
+                as: 'fotoPerfil',
+                attributes: ['id', 'url']
+            }]
+        });
+        
+        if (!usuario) {
+            throw new NotFoundError('Usuário não encontrado.');
+        }
+
+        // Formatar resposta incluindo URL da foto
+        return {
+            ...usuario.toJSON(),
+            url: usuario.fotoPerfil?.url || null
+        };
     }
 
     // Criar novo usuário
@@ -42,6 +83,8 @@ export class UsuarioService {
         });
     }
 
+
+    
     // Atualizar usuário
     static async updateUsuario(id: number, data: Partial<Omit<UsuarioAttributes, 'id' | 'dataCriacao' | 'dataAtualizacao'>>): Promise<UsuarioAttributes> {
         // Verificar se o usuário existe

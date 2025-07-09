@@ -5,7 +5,9 @@ import {
     createUsuario,
     updateUsuario,
     updateUsuarioSenha,
-    deleteUsuario
+    deleteUsuario,
+    getUsuariosComFoto,
+    getUsuarioComFotoById
 } from '@controllers/UsuarioController';
 
 const router = express.Router();
@@ -17,5 +19,9 @@ router.post('/usuario', createUsuario); // Criar um novo usuário
 router.put('/usuario/:id', updateUsuario); // Atualizar um usuário existente
 router.put('/usuario/senha/:id', updateUsuarioSenha); // Atualizar a senha de um usuário
 router.put('/usuario/:id/delete', deleteUsuario); // Alterar o status de um usuário para 0 (desativar)
+
+// NOVAS ROTAS para buscar com foto
+router.get('/usuarios/fotos', getUsuariosComFoto);
+router.get('/usuarios/:id/foto', getUsuarioComFotoById);
 
 export default router;

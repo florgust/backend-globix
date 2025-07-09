@@ -14,6 +14,15 @@ export const getUsuarios = asyncHandler(async (req: Request, res: Response): Pro
     res.json(usuarios);
 });
 
+export const getUsuariosComFoto = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    console.log('GET /usuarios/fotos - Iniciando busca de todos os usuários com fotos');
+    
+    const usuarios = await UsuarioService.getUsuariosComFoto();
+    
+    console.log('GET /usuarios/fotos - Usuários encontrados:', usuarios.length);
+    res.json(usuarios);
+});
+
 // Buscar usuário por ID
 export const getUsuarioById = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
@@ -22,6 +31,16 @@ export const getUsuarioById = asyncHandler(async (req: Request, res: Response): 
     const usuario: UsuarioAttributes | null = await UsuarioService.getUsuarioById(Number(id));
 
     console.log(`GET /usuarios/${id} - Usuário encontrado:`, usuario);
+    res.json(usuario);
+});
+
+export const getUsuarioComFotoById = asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    console.log(`GET /usuarios/${id}/foto - Iniciando busca com foto`);
+
+    const usuario = await UsuarioService.getUsuarioComFotoById(Number(id));
+
+    console.log(`GET /usuarios/${id}/foto - Usuário encontrado:`, usuario);
     res.json(usuario);
 });
 
