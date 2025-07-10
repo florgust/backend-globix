@@ -5,6 +5,8 @@ import { NotFoundError, BadRequestError } from '@utils/Errors';
 import { criarNotificacao } from '@utils/notificacaoUtils';
 import Usuario from '@models/Usuario';
 import Transporte from '@models/Transporte';
+import { getFotoCapa } from '@controllers/api/foto/FotoController';
+import FotoService from './FotoService';
 
 export class SolicitacaoService {
     // Buscar todas as solicitações de um usuário
@@ -43,25 +45,83 @@ export class SolicitacaoService {
         });
 
         // Monta o retorno no formato desejado
-        return solicitacoes.map((solicitacao: any) => {
-            const viagem = solicitacao.viagem;
-            console.log(viagem);
-            return {
-                id: viagem.id,
-                nome: viagem.nome,
-                imagem: "/images-my_trips/rifaina.png",
-                dataInicio: viagem.dataInicio,
-                dataFim: viagem.dataFim,
-                codigoConvite: viagem.codigoConvite,
-                cidadeOrigem: viagem.cidadeOrigem,
-                cidadeDestino: viagem.cidadeDestino,
-                organizador: viagem.criador?.nome ?? "",
+        return await Promise.all(solicitacoes.map(async (solicitacao: any) => {
+        const viagem = solicitacao.viagem;
+        const fotoCapa = await FotoService.getFotoCapa(viagem.id);
+        const imagemViagem = fotoCapa?.url || null;
+
+        return {
+            id: viagem.id,
+            nome: viagem.nome,
+            imagem: imagemViagem,
+            dataInicio: viagem.dataInicio,
+            dataFim: viagem.dataFim,
+            codigoConvite: viagem.codigoConvite,
+            cidadeOrigem: viagem.cidadeOrigem,
+            cidadeDestino: viagem.cidadeDestino,
+            organizador: viagem.criador?.nome ?? "",
                 criadorId: viagem.criadorId,
-                transporte: viagem.transportes?.[0]?.tipoTransporte ?? "",
-                papel: solicitacao.papel,
-                status: solicitacao.status
-            };
+            transporte: viagem.transportes?.[0]?.tipoTransporte ?? "",
+            papel: solicitacao.papel,
+            status: solicitacao.status
+        };
+    }));
+    }
+
+    static async getSolicitacoesViagemToCardCommunity(idUsuario: number) {
+        // Busca todas as solicitações do usuário
+        const solicitacoes = await Solicitacao.findAll({
+            where: { idUsuario, inseridoNaViagem: 1 },
+            include: [
+                {
+                    model: Viagem,
+                    as: 'viagem',
+                    include: [
+                        {
+                            model: Usuario,
+                            as: 'criador', // ajuste conforme associação
+                            attributes: ['id','nome']
+                        },
+                        {
+                            model: Transporte,
+                            as: 'transportes', // ajuste conforme associação
+                            attributes: ['tipoTransporte']
+                        }
+                    ]
+                }
+            ]
         });
+
+        // Monta o retorno no formato desejado
+        return await Promise.all(solicitacoes.map(async (solicitacao: any) => {
+        const viagem = solicitacao.viagem;
+        const fotoCapa = await FotoService.getFotoCapa(viagem.id);
+        const imagemViagem = fotoCapa?.url || null;
+        let fotoPerfilOrganizador = null;
+        if (viagem.criador?.id) {
+            const fotoPerfil = await FotoService.getFotoPerfil(viagem.criador.id);
+            fotoPerfilOrganizador = fotoPerfil?.url || null;
+        }
+
+        return {
+            id: viagem.id,
+            nome: viagem.nome,
+            foto: imagemViagem, // capa da viagem
+            dataInicio: viagem.dataInicio,
+            dataFim: viagem.dataFim,
+            codigoConvite: viagem.codigoConvite,
+            cidadeOrigem: viagem.cidadeOrigem,
+            cidadeDestino: viagem.cidadeDestino,
+            organizador: {
+                id: viagem.criador?.id ?? null,
+                nome: viagem.criador?.nome ?? "",
+                foto: fotoPerfilOrganizador // foto do organizador
+            },
+            transporte: viagem.transportes?.[0]?.tipoTransporte ?? "",
+            papel: solicitacao.papel,
+            status: solicitacao.status
+        };
+    }));
     }
 
     static async criarSolicitacao(idViagem: number, idUsuario: number) {

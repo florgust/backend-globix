@@ -36,6 +36,17 @@ class Viagem extends Model<ViagemAttributes> implements ViagemAttributes {
     public quantidadeParticipante!: number;
     public cidadeOrigem!: string;
     public cidadeDestino!: string;
+
+    public fotoCapa?: any;
+
+    static associate(models: any) {
+        // Uma viagem tem UMA foto de capa
+        Viagem.hasOne(models.Foto, {
+            foreignKey: 'viagemId',
+            as: 'fotoCapa',
+            scope: { tipo: 'capa_viagem' }
+        });
+    }
 }
 
 Viagem.init(

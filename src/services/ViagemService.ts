@@ -7,6 +7,7 @@ import Itinerario from '@models/Itinerario';
 import Localizacao from '@models/Localizacao';
 import { criarNotificacao } from '@utils/notificacaoUtils';
 import Solicitacao from '@models/Solicitacao';
+import Foto from '@models/Foto';
 
 export class ViagemService {
     // Buscar todas as viagens
@@ -16,6 +17,28 @@ export class ViagemService {
         } catch (error) {
             console.error('Erro ao buscar viagens:', error); // Exibe o erro completo
             throw error; // Repassa o erro para ser tratado no controller
+        }
+    }
+    
+    public static async getViagensComFoto(): Promise<any[]> {
+        try {
+            const viagens = await Viagem.findAll({
+                include: [{
+                    model: Foto,
+                    as: 'fotoCapa',
+                    attributes: ['id', 'url'],
+                    required: false // LEFT JOIN - viagem pode não ter foto
+                }]
+            });
+
+            // Formatar resposta incluindo URL da foto
+            return viagens.map(viagem => ({
+                ...viagem.toJSON(),
+                url: viagem.fotoCapa?.url || null
+            }));
+        } catch (error) {
+            console.error('Erro ao buscar viagens com foto:', error);
+            throw error;
         }
     }
 
@@ -28,6 +51,26 @@ export class ViagemService {
         return viagem;
     }
 
+    public static async getViagemComFotoById(id: number): Promise<any> {
+        const viagem = await Viagem.findByPk(id, {
+            include: [{
+                model: Foto,
+                as: 'fotoCapa',
+                attributes: ['id', 'url']
+            }]
+        });
+        
+        if (!viagem) {
+            throw new NotFoundError('Viagem não encontrada.');
+        }
+
+        // Formatar resposta incluindo URL da foto
+        return {
+            ...viagem.toJSON(),
+            url: viagem.fotoCapa?.url || null
+        };
+    }
+
     // Buscar viagem por código de convite
     public static async getViagemByCodigoConvite(codigoConvite: number): Promise<ViagemAttributes> {
         const viagem = await Viagem.findOne({ where: { codigoConvite } });
@@ -37,11 +80,32 @@ export class ViagemService {
         return viagem;
     }
 
+    public static async getViagemComFotoByCodigoConvite(codigoConvite: number): Promise<any> {
+        const viagem = await Viagem.findOne({ 
+            where: { codigoConvite },
+            include: [{
+                model: Foto,
+                as: 'fotoCapa',
+                attributes: ['id', 'url'],
+                required: false
+            }]
+        });
+        
+        if (!viagem) {
+            throw new NotFoundError('Viagem não encontrada com o código de convite fornecido.');
+        }
+
+        return {
+            ...viagem.toJSON(),
+            url: viagem.fotoCapa?.url || null
+        };
+    }
+
     // Criar nova viagem com validação
     static async createViagem(data: Omit<ViagemAttributes, 'id' | 'codigoConvite' | 'status' | 'dataCriacao' | 'dataAtualizacao'>): Promise<ViagemAttributes> {
         // Criar a viagem no banco de dados com dataCriacao e dataAtualizacao
         const codigoConvite = await this.createCodigoConvite(); // Chama o método de instância
-
+        
         return await Viagem.create({
             ...data,
             codigoConvite: codigoConvite, // Configura o código de convite

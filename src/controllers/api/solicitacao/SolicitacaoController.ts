@@ -19,8 +19,22 @@ export const getSolicitacoesPorViagem = asyncHandler(async (req: Request, res: R
 
 export const getSolicitacoesViagemToCard = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { idUsuario } = req.params;
-    const solicitacoes: SolicitacaoViagemCard[] = await SolicitacaoService.getSolicitacoesViagemToCard(Number(idUsuario));
+    const solicitacoesRaw = await SolicitacaoService.getSolicitacoesViagemToCard(Number(idUsuario));
+    const solicitacoes: SolicitacaoViagemCard[] = solicitacoesRaw.map((s: any) => ({
+        ...s,
+        imagem: s.imagem ?? ""
+    }));
     res.status(200).json(solicitacoes);
+});
+
+export const getSolicitacoesViagemToCardCommunity = asyncHandler (async (req: Request, res: Response): Promise<void> => {
+    const { idUsuario } = req.params;
+    try {
+        const viagens = await SolicitacaoService.getSolicitacoesViagemToCardCommunity(Number(idUsuario));
+        res.status(200).json(viagens);
+    } catch (error) {
+        res.status(500).json({ error: "Erro ao buscar viagens da comunidade." });
+    }
 });
 
 // Criar uma nova solicitação
@@ -31,9 +45,15 @@ export const criarSolicitacao = asyncHandler(async (req: Request, res: Response)
 });
 
 export const criarSolicitacaoCriadorViagem = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const { idViagem, idUsuario } = req.params;
+    try{
+const { idViagem, idUsuario } = req.params;
     const novaSolicitacao = await SolicitacaoService.criarSolicitacaoCriadorViagem(Number(idViagem), Number(idUsuario));
     res.status(201).json(novaSolicitacao);
+    }
+    catch (error:any) {
+    console.error("Erro ao criar solicitação:", error);
+    res.status(400).json({ error: error.message });
+  }
 });
 
 export const promoverOuDespromoverOrganizadorSolicitacao = asyncHandler(async (req: Request, res: Response): Promise<void> => {

@@ -16,10 +16,10 @@ const sequelize = new Sequelize({
     logging: console.log,
     dialectOptions: useSSL ? {
         ssl: {
-            require: false,
-            rejectUnauthorized: false
-        }
-    } : undefined
+            require: true,
+            rejectUnauthorized: false, // para certificados self-signed
+        },
+    },
 });
 
 export default sequelize;
